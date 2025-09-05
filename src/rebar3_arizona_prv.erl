@@ -2,8 +2,7 @@
 
 -export([init/1, do/1, format_error/1]).
 
--define(PROVIDER, rebar3_arizona).
--define(DEPS, [app_discovery]).
+-ignore_xref([init/1, do/1, format_error/1]).
 
 %% ===================================================================
 %% Public API
@@ -11,22 +10,29 @@
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
     Provider = providers:create([
-        {name, ?PROVIDER},            % The 'user friendly' name of the task
-        {module, ?MODULE},            % The module implementation of the task
-        {bare, true},                 % The task can be run by the user, always true
-        {deps, ?DEPS},                % The list of dependencies
-        {example, "rebar3 rebar3_arizona"}, % How to use the plugin
-        {opts, []},                   % list of options understood by the plugin
-        {short_desc, "A rebar plugin"},
-        {desc, "A rebar plugin"}
+        % The 'user friendly' name of the task
+        {name, arizona},
+        % The module implementation of the task
+        {module, ?MODULE},
+        % The task can be run by the user, always true
+        {bare, true},
+        % The list of dependencies
+        {deps, []},
+        % How to use the plugin
+        {example, "rebar3 arizona"},
+        % list of options understood by the plugin
+        {opts, []},
+        {short_desc, "Arizona framework tooling"},
+        {desc,
+            "Arizona framework tooling for project management, "
+            "server operations, and development tasks"}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
-
 
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
     {ok, State}.
 
--spec format_error(any()) ->  iolist().
+-spec format_error(term()) -> iolist().
 format_error(Reason) ->
     io_lib:format("~p", [Reason]).
