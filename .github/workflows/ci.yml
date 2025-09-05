@@ -1,0 +1,180 @@
+---
+name: CI
+
+"on":
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+  merge_group:
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  cache:
+    name: Cache
+
+    runs-on: ubuntu-24.04
+
+    outputs:
+      build-cache-key: ${{ steps.set-build-key.outputs.key }}
+      rebar-cache-key: ${{ steps.set-rebar-key.outputs.key }}
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: erlef/setup-beam@e6d7c94229049569db56a7ad5a540c051a010af9 # v1.20.4
+        id: setup-beam
+        with:
+          version-type: strict
+          version-file: .tool-versions
+
+      - name: Set build cache key
+        id: set-build-key
+        run: |
+          echo "key=\
+          _build-\
+          ${{ runner.os }}-\
+          otp-${{ steps.setup-beam.outputs.otp-version }}-\
+          rebar3-hash-${{ hashFiles('rebar.lock') }}" \
+          >> "${GITHUB_OUTPUT}"
+
+      - name: Set rebar cache key
+        id: set-rebar-key
+        run: |
+          echo "key=\
+          rebar3-\
+          ${{ runner.os }}-\
+          otp-${{ steps.setup-beam.outputs.otp-version }}-\
+          rebar3-${{ steps.setup-beam.outputs.rebar3-version }}-\
+          config-${{ hashFiles('rebar.config') }}" \
+          >> "${GITHUB_OUTPUT}"
+
+      - name: Cache _build
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: _build
+          key: ${{ steps.set-build-key.outputs.key }}
+          restore-keys: |
+            _build-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            _build-${{ runner.os }}-
+
+      - name: Cache rebar3
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/rebar3
+          key: ${{ steps.set-rebar-key.outputs.key }}
+          restore-keys: |
+            rebar3-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            rebar3-${{ runner.os }}-
+
+      - name: Compile
+        run: |
+          rebar3 as test compile
+
+  check:
+    name: Check
+
+    needs: cache
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: erlef/setup-beam@e6d7c94229049569db56a7ad5a540c051a010af9 # v1.20.4
+        id: setup-beam
+        with:
+          version-type: strict
+          version-file: .tool-versions
+
+      - name: Check code
+        run: |
+          rebar3 as test check
+
+  test:
+    name: Test
+
+    needs: cache
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: erlef/setup-beam@e6d7c94229049569db56a7ad5a540c051a010af9 # v1.20.4
+        id: setup-beam
+        with:
+          version-type: strict
+          version-file: .tool-versions
+
+      - name: Restore _build cache
+        id: restore-build-cache
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: _build
+          key: ${{ needs.cache.outputs.build-cache-key }}
+          restore-keys: |
+            _build-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            _build-${{ runner.os }}-
+
+      - name: Restore rebar3 cache
+        id: restore-rebar3-cache
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/rebar3
+          key: ${{ needs.cache.outputs.rebar-cache-key }}
+          restore-keys: |
+            rebar3-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            rebar3-${{ runner.os }}-
+
+      - name: Test
+        run: |
+          rebar3 as test test
+
+  artifacts:
+    name: Verify artifacts
+
+    needs: cache
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: erlef/setup-beam@e6d7c94229049569db56a7ad5a540c051a010af9 # v1.20.4
+        id: setup-beam
+        with:
+          version-type: strict
+          version-file: .tool-versions
+
+      - name: Restore _build cache
+        id: restore-build-cache
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: _build
+          key: ${{ needs.cache.outputs.build-cache-key }}
+          restore-keys: |
+            _build-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            _build-${{ runner.os }}-
+
+      - name: Restore rebar3 cache
+        id: restore-rebar3-cache
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/rebar3
+          key: ${{ needs.cache.outputs.rebar-cache-key }}
+          restore-keys: |
+            rebar3-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+            rebar3-${{ runner.os }}-
+
+      - name: Check if build left artifacts
+        run: |
+          rebar3 unlock --all
+          rebar3 upgrade --all
+          git diff --exit-code
