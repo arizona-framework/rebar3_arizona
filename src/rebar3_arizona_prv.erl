@@ -70,7 +70,8 @@ do(State) ->
 -spec interactive_menu(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 interactive_menu(State) ->
     Options = [
-        {"Create new Arizona app", fun create_hello_world/1},
+        {"Create Arizona hello world app", fun create_hello_world/1},
+        {"Create Arizona presence app", fun create_arizona_presence/1},
         {"Cancel", fun(_) -> {ok, cancelled} end}
     ],
 
@@ -166,7 +167,15 @@ handle_input([], Options, Selected) ->
 -spec create_hello_world(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 create_hello_world(State) ->
     io:format("~sCreating Arizona application...~s~n", [?GREENCOLOR, ?RESET]),
-    NewState = rebar_state:command_args(State, ["arizona.hello_world", "name=hello_arizona"]),
+    Args = [],
+    NewState = rebar_state:command_args(State, ["arizona.hello_world" | Args]),
+    rebar_prv_new:do(NewState).
+
+-spec create_arizona_presence(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
+create_arizona_presence(State) ->
+    io:format("~sCreating Arizona presence example...~s~n", [?GREENCOLOR, ?RESET]),
+    Args = [],
+    NewState = rebar_state:command_args(State, ["arizona.presence" | Args]),
     rebar_prv_new:do(NewState).
 
 -spec format_error(term()) -> iolist().
