@@ -1,11 +1,10 @@
 -module({{name}}_conf).
 
--export([arizona/1]).
+-export([arizona/0]).
 
--spec arizona(CounterRef) -> Config when
-    CounterRef :: counters:counters_ref(),
+-spec arizona() -> Config when
     Config :: arizona:config().
-arizona(CounterRef) ->
+arizona() ->
     #{
         server => #{
             transport_opts => [{port, 8080}],
