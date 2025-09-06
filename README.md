@@ -1,7 +1,7 @@
 # Arizona Framework CLI Toolkit
 
 Interactive command-line toolkit for the [Arizona Framework](https://github.com/arizona-framework/arizona).
-Create projects, manage servers, run development tasks, and more.
+Create new Arizona applications with project templates.
 
 ## Installation
 
@@ -41,8 +41,8 @@ https://github.com/arizona-framework/arizona
 
 Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
 
-[●] Create Arizona hello world app
-[ ] Create Arizona presence app
+[●] Create hello world app
+[ ] Create presence app
 [ ] Cancel
 ```
 

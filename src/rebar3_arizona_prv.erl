@@ -41,7 +41,7 @@ init(State) ->
         {short_desc, "Arizona Framework CLI toolkit"},
         {desc,
             "Interactive command-line toolkit for Arizona Framework. "
-            "Create projects, manage servers, run development tasks, and more."}
+            "Create new Arizona applications with project templates."}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
