@@ -1,0 +1,25 @@
+{description, "Arizona Framework application"}.
+{variables, [
+    {name, "arizona_hello_world", "Name of the Arizona application"}
+]}.
+
+%% /priv
+
+{file, "arizona.hello_world/priv/static/favicon.ico", "{{name}}/priv/static/favicon.ico"}.
+{file, "arizona.hello_world/priv/static/robots.txt", "{{name}}/priv/static/robots.txt"}.
+
+%% /src
+
+{template, "arizona.hello_world/src/app.src", "{{name}}/src/{{name}}.app.src"}.
+{template, "arizona.hello_world/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
+{template, "arizona.hello_world/src/conf.erl", "{{name}}/src/{{name}}_conf.erl"}.
+{template, "arizona.hello_world/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
+{template, "arizona.hello_world/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
+{template, "arizona.hello_world/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
+
+%% /
+
+{file, "arizona.hello_world/.gitignore", "{{name}}/.gitignore"}.
+{template, "arizona.hello_world/LICENSE.md", "{{name}}/LICENSE.md"}.
+{template, "arizona.hello_world/README.md", "{{name}}/README.md"}.
+{template, "arizona.hello_world/rebar.config", "{{name}}/rebar.config"}.
