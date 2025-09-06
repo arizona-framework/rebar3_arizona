@@ -7,7 +7,6 @@
 arizona() ->
     #{
         server => #{
-            transport_opts => [{port, 8080}],
             routes => routes()
         },
         reloader => #{
