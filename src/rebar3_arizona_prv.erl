@@ -70,8 +70,7 @@ do(State) ->
 -spec interactive_menu(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 interactive_menu(State) ->
     Options = [
-        {"Create hello world app", fun create_hello_world/1},
-        {"Create presence app", fun create_arizona_presence/1},
+        {"Create new app", fun create_new_app/1},
         {"Cancel", fun(_) -> {ok, cancelled} end}
     ],
 
@@ -162,20 +161,110 @@ handle_input([], Options, Selected) ->
     interactive_loop(Options, Selected).
 
 %% ===================================================================
-%% Template Functions
+%% App Creation Functions
 %% ===================================================================
--spec create_hello_world(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
-create_hello_world(State) ->
-    io:format("~sCreating Arizona application...~s~n", [?GREENCOLOR, ?RESET]),
-    Args = [],
-    NewState = rebar_state:command_args(State, ["arizona.hello_world" | Args]),
-    rebar_prv_new:do(NewState).
+-spec create_new_app(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
+create_new_app(State) ->
+    case prompt_app_name() of
+        cancelled ->
+            {ok, cancelled};
+        AppName ->
+            template_selection_menu(State, AppName)
+    end.
 
--spec create_arizona_presence(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
-create_arizona_presence(State) ->
-    io:format("~sCreating Arizona presence example...~s~n", [?GREENCOLOR, ?RESET]),
-    Args = [],
-    NewState = rebar_state:command_args(State, ["arizona.presence" | Args]),
+-spec prompt_app_name() -> string() | cancelled.
+prompt_app_name() ->
+    % Clear screen and show app name prompt
+    io:put_chars("\e[2J\e[H"),
+    io:format("~s~s~s\r\n", [?GREENCOLOR, ?ARIZONA_LOGO, ?RESET]),
+    io:format("Enter app name (or Esc/q to cancel): "),
+
+    % Show cursor for input
+    io:put_chars("\e[?25h"),
+
+    case read_app_name_input([]) of
+        cancelled -> cancelled;
+        Name -> string:trim(Name)
+    end.
+
+-spec read_app_name_input(string()) -> string() | cancelled.
+read_app_name_input(Acc) ->
+    case io:get_chars("", 1) of
+        {error, _} ->
+            read_app_name_input(Acc);
+        {ok, [Char]} ->
+            handle_name_input([Char], Acc);
+        [Char] ->
+            handle_name_input([Char], Acc)
+    end.
+
+-spec handle_name_input(string(), string()) -> string() | cancelled.
+handle_name_input("\r", Acc) ->
+    % Enter pressed
+    case string:trim(Acc) of
+        % Don't allow empty names
+        "" -> read_app_name_input(Acc);
+        Name -> Name
+    end;
+handle_name_input("\n", Acc) ->
+    % Newline - also treat as Enter
+    case string:trim(Acc) of
+        "" -> read_app_name_input(Acc);
+        Name -> Name
+    end;
+handle_name_input("\e", _Acc) ->
+    % Escape pressed
+    cancelled;
+handle_name_input("q", _Acc) ->
+    % Q pressed
+    cancelled;
+handle_name_input("Q", _Acc) ->
+    % Q pressed
+    cancelled;
+handle_name_input([127], Acc) ->
+    % Backspace/Delete
+    case Acc of
+        "" ->
+            read_app_name_input(Acc);
+        _ ->
+            NewAcc = string:slice(Acc, 0, length(Acc) - 1),
+            % Move back, print space, move back
+            io:format("\b \b"),
+            read_app_name_input(NewAcc)
+    end;
+handle_name_input([Char], Acc) when Char >= 32, Char =< 126 ->
+    % Printable character
+    io:format("~c", [Char]),
+    read_app_name_input(Acc ++ [Char]);
+handle_name_input(_, Acc) ->
+    % Ignore other characters
+    read_app_name_input(Acc).
+
+-spec template_selection_menu(rebar_state:t(), string()) ->
+    {ok, rebar_state:t()} | {error, string()}.
+template_selection_menu(State, AppName) ->
+    % Hide cursor again for menu navigation
+    io:put_chars("\e[?25l"),
+
+    Options = [
+        {"Hello world template", fun(S) -> create_template(S, AppName, "arizona.hello_world") end},
+        {"Presence template", fun(S) -> create_template(S, AppName, "arizona.presence") end},
+        {"Cancel", fun(_) -> {ok, cancelled} end}
+    ],
+
+    case interactive_loop(Options, 1) of
+        cancelled ->
+            {ok, cancelled};
+        Action when is_function(Action, 1) ->
+            Action(State)
+    end.
+
+-spec create_template(rebar_state:t(), string(), string()) ->
+    {ok, rebar_state:t()} | {error, string()}.
+create_template(State, AppName, Template) ->
+    io:format("~sCreating ~s...~s~n", [?GREENCOLOR, AppName, ?RESET]),
+    Args = ["name=" ++ AppName],
+    NewState = rebar_state:command_args(State, [Template | Args]),
     rebar_prv_new:do(NewState).
 
 -spec format_error(term()) -> iolist().
