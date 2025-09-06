@@ -41,15 +41,27 @@ https://github.com/arizona-framework/arizona
 
 Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
 
-[●] Create hello world app
-[ ] Create presence app
+[●] Create new app
+[ ] Cancel
+
+## Step 2: Enter app name
+
+Enter app name (or Esc/q to cancel): myapp
+
+## Step 3: Choose template
+
+Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
+
+[●] Hello world template
+[ ] Presence template
 [ ] Cancel
 ```
 
-Navigate the menu options:
+The interactive flow:
 
-- **Create Arizona hello world app** - Basic Arizona application template
-- **Create Arizona presence app** - Real-time presence/counter example
+1. **Choose "Create new app"** from the main menu
+2. **Enter your app name** (e.g., "myapp")
+3. **Select a template**: Hello world (basic) or Presence (real-time example)
 
 ### Controls
 
