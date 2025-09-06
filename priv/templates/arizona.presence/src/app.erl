@@ -13,6 +13,7 @@ start(_StartType, _StartArgs) ->
         {ok, SupPid} ?= {{name}}_sup:start_link(),
         CounterRef = counters:new(1, [write_concurrency]),
         ok ?= arizona:start({{name}}_conf:arizona(CounterRef)),
+        ok = io:format("Arizona app started at http://localhost:1912~n"),
         {ok, SupPid}
     else
         {error, Reason} ->

@@ -12,6 +12,7 @@ start(_StartType, _StartArgs) ->
     maybe
         {ok, SupPid} ?= {{name}}_sup:start_link(),
         ok ?= arizona:start({{name}}_conf:arizona()),
+        ok = io:format("Arizona app started at http://localhost:1912~n"),
         {ok, SupPid}
     else
         {error, Reason} ->
