@@ -70,8 +70,8 @@ do(State) ->
 -spec interactive_menu(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 interactive_menu(State) ->
     Options = [
-        {"Create Arizona hello world app", fun create_hello_world/1},
-        {"Create Arizona presence app", fun create_arizona_presence/1},
+        {"Create hello world app", fun create_hello_world/1},
+        {"Create presence app", fun create_arizona_presence/1},
         {"Cancel", fun(_) -> {ok, cancelled} end}
     ],
 
