@@ -28,4 +28,4 @@ render(Bindings) ->
 
 handle_event(~"increment", _Payload, State) ->
     Count = arizona_stateful:get_binding(count, State),
-    {noreply, arizona_stateful:put_binding(count, Count + 1, State)}.
+    {[], arizona_stateful:put_binding(count, Count + 1, State)}.
