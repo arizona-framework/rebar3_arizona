@@ -71,6 +71,34 @@ The interactive flow:
 
 ## Development
 
+### Local Development Setup
+
+For local development, create a symlink in the global rebar3 checkouts directory:
+
+```bash
+mkdir -p ~/.config/rebar3/_checkouts
+ln -sf /path/to/your/rebar3_arizona ~/.config/rebar3/_checkouts/rebar3_arizona
+```
+
+This allows rebar3 to use your local development version when the plugin is
+configured in `~/.config/rebar3/rebar.config`.
+
+> [!NOTE]
+>
+> Local checkouts work for project-specific development (when the plugin is in a
+> project's `rebar.config`), but have limitations for global usage. For example:
+>
+> ```erlang
+> % In a project's rebar.config - works with local checkouts
+> {plugins, [
+>     {rebar3_arizona, {git, "https://github.com/arizona-framework/rebar3_arizona.git", {branch, "main"}}}
+> ]}.
+> ```
+>
+> The plugin will only work globally from anywhere once merged to the main branch
+> on GitHub, as rebar3's global plugin system doesn't fully support local checkouts
+> for plugins that need to work outside project directories.
+
 Build the plugin:
 
 ```bash
