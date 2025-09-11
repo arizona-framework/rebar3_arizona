@@ -7,7 +7,8 @@
 -export([handle_info/2]).
 -export([terminate/2]).
 
-mount(#{title := PageTitle, counter_ref := OnlineCounterRef}, _HttpRequest) ->
+mount(#{title := PageTitle}, _HttpRequest) ->
+    OnlineCounterRef = persistent_term:get(counter_ref),
     _ = arizona_live:is_connected(self()) andalso initialize_connected_session(OnlineCounterRef),
     Bindings = #{
         id => ~"main-view",
@@ -73,14 +74,16 @@ handle_event(~"presence", _EventParams, View) ->
     OnlineCounterRef = arizona_stateful:get_binding(counter_ref, CurrentState),
     CurrentOnlineCount = counters:get(OnlineCounterRef, 1),
     UpdatedState = arizona_stateful:put_binding(online_users_count, CurrentOnlineCount, CurrentState),
-    {noreply, arizona_view:update_state(UpdatedState, View)}.
+    {[], arizona_view:update_state(UpdatedState, View)};
+handle_event(~"reload", _FileType, View) ->
+    {[reload], View}.
 
 handle_info(tick, View) ->
     _ = schedule_uptime_tick(),
     CurrentState = arizona_view:get_state(View),
     CurrentUptime = arizona_stateful:get_binding(uptime_seconds, CurrentState),
     UpdatedState = arizona_stateful:put_binding(uptime_seconds, CurrentUptime + 1, CurrentState),
-    {noreply, arizona_view:update_state(UpdatedState, View)}.
+    {[], arizona_view:update_state(UpdatedState, View)}.
 
 terminate(_ShutdownReason, View) ->
     ViewState = arizona_view:get_state(View),

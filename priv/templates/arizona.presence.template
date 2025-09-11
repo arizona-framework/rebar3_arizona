@@ -3,6 +3,10 @@
     {name, "arizona_presence", "Name of the Arizona application"}
 ]}.
 
+%% /config
+
+{template, "arizona.presence/config/sys.config", "{{name}}/config/sys.config"}.
+
 %% /priv
 
 {file, "arizona.presence/priv/static/assets/js/main.js", "{{name}}/priv/static/assets/js/main.js"}.
@@ -13,8 +17,8 @@
 
 {template, "arizona.presence/src/app.src", "{{name}}/src/{{name}}.app.src"}.
 {template, "arizona.presence/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
-{template, "arizona.presence/src/conf.erl", "{{name}}/src/{{name}}_conf.erl"}.
 {template, "arizona.presence/src/counter.erl", "{{name}}/src/{{name}}_counter.erl"}.
+{template, "arizona.presence/src/erl_reloader.erl", "{{name}}/src/{{name}}_erl_reloader.erl"}.
 {template, "arizona.presence/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
 {template, "arizona.presence/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
 {template, "arizona.presence/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
