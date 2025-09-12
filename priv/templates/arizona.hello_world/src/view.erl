@@ -3,7 +3,6 @@
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/2]).
 -export([render/1]).
--export([handle_event/3]).
 
 mount(#{title := Title}, _Req) ->
     Bindings = #{
@@ -22,6 +21,3 @@ render(Bindings) ->
         Hello, {arizona_template:get_binding(name, Bindings)}!
     </div>
     """).
-
-handle_event(~"reload", _FileType, View) ->
-    {[reload], View}.

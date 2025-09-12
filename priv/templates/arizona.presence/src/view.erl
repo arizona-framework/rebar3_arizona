@@ -74,9 +74,7 @@ handle_event(~"presence", _EventParams, View) ->
     OnlineCounterRef = arizona_stateful:get_binding(counter_ref, CurrentState),
     CurrentOnlineCount = counters:get(OnlineCounterRef, 1),
     UpdatedState = arizona_stateful:put_binding(online_users_count, CurrentOnlineCount, CurrentState),
-    {[], arizona_view:update_state(UpdatedState, View)};
-handle_event(~"reload", _FileType, View) ->
-    {[reload], View}.
+    {[], arizona_view:update_state(UpdatedState, View)}.
 
 handle_info(tick, View) ->
     _ = schedule_uptime_tick(),
