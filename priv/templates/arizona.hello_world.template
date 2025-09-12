@@ -16,7 +16,6 @@
 
 {template, "arizona.hello_world/src/app.src", "{{name}}/src/{{name}}.app.src"}.
 {template, "arizona.hello_world/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
-{template, "arizona.hello_world/src/erl_reloader.erl", "{{name}}/src/{{name}}_erl_reloader.erl"}.
 {template, "arizona.hello_world/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
 {template, "arizona.hello_world/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
 {template, "arizona.hello_world/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
