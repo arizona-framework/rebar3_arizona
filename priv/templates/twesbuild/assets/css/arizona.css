@@ -150,7 +150,7 @@
       rgba(42, 42, 42, 0.75) 35%,
       rgba(210, 105, 30, 0.15) 100%
     ),
-    url('/images/arizona_landscape.jpg');
+    url('/images/arizona-hero-bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

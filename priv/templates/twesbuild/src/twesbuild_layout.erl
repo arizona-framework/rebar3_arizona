@@ -17,13 +17,13 @@ render(Bindings) ->
         <meta property="og:type" content="website">
         <meta property="og:title" content="{arizona_template:get_binding(title, Bindings)}">
         <meta property="og:description" content="Build real-time web applications with Arizona - a modern Erlang framework">
-        <meta property="og:image" content="/images/arizona_landscape.jpg">
+        <meta property="og:image" content="/images/arizona-hero-bg.jpg">
 
         {% Twitter }
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="{arizona_template:get_binding(title, Bindings)}">
         <meta property="twitter:description" content="Build real-time web applications with Arizona - a modern Erlang framework">
-        <meta property="twitter:image" content="/images/arizona_landscape.jpg">
+        <meta property="twitter:image" content="/images/arizona-hero-bg.jpg">
 
         <title>{arizona_template:get_binding(title, Bindings)}</title>
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
