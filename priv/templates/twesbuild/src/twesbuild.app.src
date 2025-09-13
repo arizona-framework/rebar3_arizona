@@ -1,0 +1,12 @@
+{application, twesbuild, [
+    {description, "An Arizona application"},
+    {vsn, "0.1.0"},
+    {mod, {twesbuild_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        arizona
+    ]},
+    {licenses, ["Apache-2.0"]},
+    {links, []}
+]}.
