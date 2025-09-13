@@ -74,8 +74,110 @@
   50% { transform: translateY(-20px); }
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes expand {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 6rem;
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-shimmer {
+  background-size: 2000px 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-expand {
+  animation: expand 0.5s ease-out 0.25s forwards;
+  width: 0;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2000ms;
+}
+
+/* Arizona landscape background */
+.bg-arizona-landscape {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(26, 26, 26, 0.85) 0%,
+      rgba(42, 42, 42, 0.75) 35%,
+      rgba(210, 105, 30, 0.15) 100%
+    ),
+    url('/images/arizona_landscape.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Ensure the overlay creates depth */
+.bg-arizona-landscape::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26, 26, 26, 0.3) 0%,
+    rgba(26, 26, 26, 0.7) 70%,
+    rgba(26, 26, 26, 0.9) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ensure content is above the overlay */
+.bg-arizona-landscape > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* Smooth scroll behavior */
