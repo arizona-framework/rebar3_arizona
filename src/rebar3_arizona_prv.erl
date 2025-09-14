@@ -249,6 +249,7 @@ template_selection_menu(State, AppName) ->
     Options = [
         {"Hello world template", fun(S) -> create_template(S, AppName, "arizona.hello_world") end},
         {"Presence template", fun(S) -> create_template(S, AppName, "arizona.presence") end},
+        {"Frontend template", fun(S) -> create_template(S, AppName, "arizona.frontend") end},
         {"Cancel", fun(_) -> {ok, cancelled} end}
     ],
 

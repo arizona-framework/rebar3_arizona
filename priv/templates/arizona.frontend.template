@@ -1,0 +1,39 @@
+{description, "Arizona Framework application with Tailwind CSS and ESBuild"}.
+{variables, [
+    {name, "arizona_frontend", "Name of the Arizona application"}
+]}.
+
+%% /assets
+
+{template, "arizona.frontend/assets/css/app.css", "{{name}}/assets/css/app.css"}.
+{template, "arizona.frontend/assets/css/arizona.css", "{{name}}/assets/css/arizona.css"}.
+{template, "arizona.frontend/assets/js/main.js", "{{name}}/assets/js/main.js"}.
+
+%% /config
+
+{template, "arizona.frontend/config/sys.config", "{{name}}/config/sys.config"}.
+
+%% /priv
+
+{file, "arizona.frontend/priv/static/assets/app.css", "{{name}}/priv/static/assets/app.css"}.
+{file, "arizona.frontend/priv/static/assets/app.js", "{{name}}/priv/static/assets/app.js"}.
+{file, "arizona.frontend/priv/static/favicon.ico", "{{name}}/priv/static/favicon.ico"}.
+{file, "arizona.frontend/priv/static/images/arizona-hero-bg.jpg", "{{name}}/priv/static/images/arizona-hero-bg.jpg"}.
+{file, "arizona.frontend/priv/static/robots.txt", "{{name}}/priv/static/robots.txt"}.
+
+%% /src
+
+{template, "arizona.frontend/src/app.src", "{{name}}/src/{{name}}.app.src"}.
+{template, "arizona.frontend/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
+{template, "arizona.frontend/src/css_reloader.erl", "{{name}}/src/{{name}}_css_reloader.erl"}.
+{template, "arizona.frontend/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
+{template, "arizona.frontend/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
+{template, "arizona.frontend/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
+
+%% /
+
+{file, "arizona.frontend/.gitignore", "{{name}}/.gitignore"}.
+{template, "arizona.frontend/LICENSE.md", "{{name}}/LICENSE.md"}.
+{template, "arizona.frontend/package.json", "{{name}}/package.json"}.
+{template, "arizona.frontend/README.md", "{{name}}/README.md"}.
+{template, "arizona.frontend/rebar.config", "{{name}}/rebar.config"}.
