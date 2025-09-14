@@ -42,7 +42,9 @@ https://github.com/arizona-framework/arizona
 Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
 
 [●] Create new app
-[ ] Cancel
+    Generate a new Arizona application from templates
+[ ] Exit
+    Exit the Arizona CLI
 
 ## Step 2: Enter app name
 
@@ -53,9 +55,15 @@ Enter app name (or Esc/q to cancel): myapp
 Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
 
 [●] Hello world template
+    Basic Arizona app with minimal setup
 [ ] Presence template
+    Real-time app with PubSub presence integration
 [ ] Frontend template
+    Modern web app with Tailwind CSS and ESBuild
 [ ] Cancel
+    Return to main menu
+[ ] Exit
+    Exit the Arizona CLI
 ```
 
 The interactive flow:

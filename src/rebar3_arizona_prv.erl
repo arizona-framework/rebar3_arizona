@@ -70,8 +70,9 @@ do(State) ->
 -spec interactive_menu(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 interactive_menu(State) ->
     Options = [
-        {"Create new app", fun create_new_app/1},
-        {"Cancel", fun(_) -> {ok, cancelled} end}
+        {"Create new app", "Generate a new Arizona application from templates",
+            fun create_new_app/1},
+        {"Exit", "Exit the Arizona CLI", fun(_) -> {ok, cancelled} end}
     ],
 
     case interactive_loop(Options, 1) of
@@ -97,12 +98,12 @@ interactive_loop(Options, Selected) ->
 
     % Display options with selection indicator
     lists:foreach(
-        fun({Index, {Text, _}}) ->
+        fun({Index, {Text, Description, _}}) ->
             case Index of
                 Selected ->
-                    io:format("~s[●] ~s~s\r\n", [?GREENCOLOR, Text, ?RESET]);
+                    io:format("~s[●] ~s\r\n    ~s~s\r\n", [?GREENCOLOR, Text, Description, ?RESET]);
                 _ ->
-                    io:format("[ ] ~s\r\n", [Text])
+                    io:format("[ ] ~s\r\n    ~s\r\n", [Text, Description])
             end
         end,
         lists:zip(lists:seq(1, length(Options)), Options)
@@ -140,11 +141,11 @@ handle_input("j" ++ Rest, Options, Selected) ->
     handle_input(Rest, Options, NewSelected);
 handle_input("\r" ++ _Rest, Options, Selected) ->
     %% Enter key - return the selected action
-    {_, Action} = lists:nth(Selected, Options),
+    {_, _, Action} = lists:nth(Selected, Options),
     Action;
 handle_input("\n" ++ _Rest, Options, Selected) ->
     %% Newline - also treat as Enter
-    {_, Action} = lists:nth(Selected, Options),
+    {_, _, Action} = lists:nth(Selected, Options),
     Action;
 handle_input("q" ++ _, _Options, _Selected) ->
     cancelled;
@@ -167,7 +168,7 @@ handle_input([], Options, Selected) ->
 create_new_app(State) ->
     case prompt_app_name() of
         cancelled ->
-            {ok, cancelled};
+            interactive_menu(State);
         AppName ->
             template_selection_menu(State, AppName)
     end.
@@ -183,8 +184,14 @@ prompt_app_name() ->
     io:put_chars("\e[?25h"),
 
     case read_app_name_input([]) of
-        cancelled -> cancelled;
-        Name -> string:trim(Name)
+        cancelled ->
+            % Hide cursor again when cancelled
+            io:put_chars("\e[?25l"),
+            cancelled;
+        Name ->
+            % Hide cursor after successful input
+            io:put_chars("\e[?25l"),
+            string:trim(Name)
     end.
 
 -spec read_app_name_input(string()) -> string() | cancelled.
@@ -247,17 +254,28 @@ template_selection_menu(State, AppName) ->
     io:put_chars("\e[?25l"),
 
     Options = [
-        {"Hello world template", fun(S) -> create_template(S, AppName, "arizona.hello_world") end},
-        {"Presence template", fun(S) -> create_template(S, AppName, "arizona.presence") end},
-        {"Frontend template", fun(S) -> create_template(S, AppName, "arizona.frontend") end},
-        {"Cancel", fun(_) -> {ok, cancelled} end}
+        {"Hello world template", "Basic Arizona app with minimal setup", fun(S) ->
+            create_template(S, AppName, "arizona.hello_world")
+        end},
+        {"Presence template", "Real-time app with PubSub presence integration", fun(S) ->
+            create_template(S, AppName, "arizona.presence")
+        end},
+        {"Frontend template", "Modern web app with Tailwind CSS and ESBuild", fun(S) ->
+            create_template(S, AppName, "arizona.frontend")
+        end},
+        {"Cancel", "Return to main menu", fun(_) -> {ok, cancelled} end},
+        {"Exit", "Exit the Arizona CLI", fun(_) -> {ok, exit} end}
     ],
 
     case interactive_loop(Options, 1) of
         cancelled ->
-            {ok, cancelled};
+            interactive_menu(State);
         Action when is_function(Action, 1) ->
-            Action(State)
+            case Action(State) of
+                {ok, cancelled} -> interactive_menu(State);
+                {ok, exit} -> {ok, State};
+                Other -> Other
+            end
     end.
 
 -spec create_template(rebar_state:t(), string(), string()) ->
