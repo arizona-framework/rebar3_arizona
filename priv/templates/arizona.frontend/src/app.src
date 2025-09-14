@@ -1,7 +1,7 @@
-{application, twesbuild, [
+{application, {{name}}, [
     {description, "An Arizona application"},
     {vsn, "0.1.0"},
-    {mod, {twesbuild_app, []}},
+    {mod, {{{name}}_app, []}},
     {applications, [
         kernel,
         stdlib,

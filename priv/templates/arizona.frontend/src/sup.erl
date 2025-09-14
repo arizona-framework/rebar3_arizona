@@ -1,4 +1,4 @@
--module(twesbuild_sup).
+-module({{name}}_sup).
 -behaviour(supervisor).
 
 -export([start_link/0]).

@@ -1,4 +1,4 @@
--module(twesbuild_app).
+-module({{name}}_app).
 -behaviour(application).
 
 -export([start/2]).
@@ -10,7 +10,7 @@
     StartRet :: {ok, pid()} | {error, term()}.
 start(_StartType, _StartArgs) ->
     maybe
-        {ok, SupPid} ?= twesbuild_sup:start_link(),
+        {ok, SupPid} ?= {{name}}_sup:start_link(),
         ok = io:format("Arizona app started at http://localhost:1912~n"),
         {ok, SupPid}
     else

@@ -1,4 +1,4 @@
--module(twesbuild_layout).
+-module({{name}}_layout).
 -compile({parse_transform, arizona_parse_transform}).
 -export([render/1]).
 

@@ -1,4 +1,4 @@
--module(twesbuild_css_reloader).
+-module({{name}}_css_reloader).
 -behaviour(arizona_reloader).
 -export([reload/2]).
 

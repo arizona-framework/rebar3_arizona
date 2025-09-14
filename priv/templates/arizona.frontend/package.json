@@ -1,5 +1,5 @@
 {
-  "name": "twesbuild",
+  "name": "{{name}}",
   "type": "module",
   "scripts": {
     "build:js": "esbuild assets/js/main.js --bundle --outfile=priv/static/assets/app.js --minify",

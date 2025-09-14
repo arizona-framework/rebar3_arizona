@@ -1,4 +1,4 @@
-# twesbuild
+# {{name}}
 
 An Arizona application.
 
@@ -6,4 +6,5 @@ An Arizona application.
 
 ```bash
 $ rebar3 compile
+$ npm install
 ```

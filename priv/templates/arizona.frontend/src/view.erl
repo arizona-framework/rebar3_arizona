@@ -1,4 +1,4 @@
--module(twesbuild_view).
+-module({{name}}_view).
 -behaviour(arizona_view).
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/2]).
@@ -14,7 +14,7 @@
 mount(#{title := Title}, _Req) ->
     Bindings = #{id => ~"view"},
     Layout =
-        {twesbuild_layout, render, main_content, #{
+        {{{name}}_layout, render, main_content, #{
             title => Title
         }},
     arizona_view:new(?MODULE, Bindings, Layout).
@@ -189,7 +189,7 @@ enhanced_next_steps(_Bindings) ->
                 end, [
                     #{
                         prefix_text => ~"Edit ",
-                        filename => ~"src/twesbuild_view.erl",
+                        filename => ~"src/{{name}}_view.erl",
                         sufix_text => ~"to customize this page"
                     },
                     #{
