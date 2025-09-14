@@ -3,30 +3,35 @@
 -export([render/1]).
 
 render(Bindings) ->
+    Description = [
+        ~"Arizona - A modern Erlang web framework for building scalable, ",
+        ~"fault-tolerant real-time applications on the BEAM"
+    ],
+    Image = ~"images/arizona-hero-bg.jpg",
     arizona_template:from_string(~"""
     <!DOCTYPE html>
     <html lang="en" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Arizona - A modern Erlang web framework for building scalable, fault-tolerant real-time applications on the BEAM">
+        <meta name="description" content="{Description}">
         <meta name="keywords" content="Erlang, BEAM, web framework, real-time, WebSocket, fault-tolerant, scalable">
         <meta name="author" content="Arizona Framework">
 
         {% Open Graph / Facebook }
         <meta property="og:type" content="website">
         <meta property="og:title" content="{arizona_template:get_binding(title, Bindings)}">
-        <meta property="og:description" content="Build real-time web applications with Arizona - a modern Erlang framework">
-        <meta property="og:image" content="/images/arizona-hero-bg.jpg">
+        <meta property="og:description" content="{Description}">
+        <meta property="og:image" content="{Image}">
 
         {% Twitter }
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="{arizona_template:get_binding(title, Bindings)}">
-        <meta property="twitter:description" content="Build real-time web applications with Arizona - a modern Erlang framework">
-        <meta property="twitter:image" content="/images/arizona-hero-bg.jpg">
+        <meta property="twitter:description" content="{Description}">
+        <meta property="twitter:image" content="{Image}">
 
         <title>{arizona_template:get_binding(title, Bindings)}</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="assets/app.css">
         <script type="module" src="assets/app.js" defer></script>
 
