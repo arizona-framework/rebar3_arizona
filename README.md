@@ -54,6 +54,7 @@ Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
 
 [●] Hello world template
 [ ] Presence template
+[ ] Frontend template
 [ ] Cancel
 ```
 
@@ -61,7 +62,34 @@ The interactive flow:
 
 1. **Choose "Create new app"** from the main menu
 2. **Enter your app name** (e.g., "myapp")
-3. **Select a template**: Hello world (basic) or Presence (real-time example)
+3. **Select a template**:
+   - **Hello world** - Basic Arizona app with minimal setup
+   - **Presence** - Real-time app with PubSub Presence integration
+   - **Frontend** - Modern web app with Tailwind CSS and ESBuild
+
+## Templates
+
+### Frontend Template
+
+The Frontend template creates a modern Arizona web application with:
+
+- **Tailwind CSS v4** - Modern utility-first CSS framework
+- **ESBuild** - Fast JavaScript bundling and minification
+- **Hot-reloading** - CSS changes reload automatically during development
+- **Componentized views** - Reusable Arizona stateless components
+- **Responsive design** - Mobile-first layout with modern UI components
+- **Build scripts** - NPM scripts for development and production builds
+
+After creating a Frontend template project:
+
+```bash
+cd myapp
+npm install          # Install dependencies
+npm run build        # Build CSS and JS
+rebar3 shell         # Start the Arizona server
+```
+
+The app will be available at http://localhost:1912 with hot-reloading enabled.
 
 ### Controls
 
