@@ -110,15 +110,13 @@ welcome_card(_Bindings) ->
                     href => ~"https://github.com/arizona-framework/arizona/blob/main/README.md",
                     icon => ~[<span class="text-2xl">📚</span>],
                     title => ~"Documentation",
-                    description => ~"Learn how to build powerful applications with Arizona's comprehensive guides",
-                    extra_classes => ~""
+                    description => ~"Learn how to build powerful applications with Arizona's comprehensive guides"
                 },
                 #{
                     href => ~"https://github.com/arizona-framework/arizona/tree/main/test/support/e2e",
                     icon => ~[<span class="text-2xl">🚀</span>],
                     title => ~"Examples",
-                    description => ~"Explore sample applications and get inspired by real-world implementations",
-                    extra_classes => ~""
+                    description => ~"Explore sample applications and get inspired by real-world implementations"
                 },
                 #{
                     href => ~"https://github.com/arizona-framework/arizona",
@@ -190,7 +188,7 @@ enhanced_next_steps(_Bindings) ->
                     #{
                         prefix_text => ~"Edit ",
                         filename => ~"src/{{name}}_view.erl",
-                        sufix_text => ~"to customize this page"
+                        suffix_text => ~" to customize this page"
                     },
                     #{
                         prefix_text => ~"Configure routes in ",
@@ -239,7 +237,7 @@ next_step(Bindings) ->
                 {arizona_template:get_binding(filename, Bindings)}
             </code>
             <span class="text-silver/90">
-                {arizona_template:get_binding(sufix_text, Bindings, ~"")}
+                {arizona_template:get_binding(suffix_text, Bindings, ~"")}
             </span>
         </div>
     </div>
@@ -255,7 +253,7 @@ quick_link_card(Bindings) ->
             ~"group bg-obsidian/60 rounded-xl p-6 hover:bg-obsidian/80 transition-all ",
             ~"duration-300 hover:scale-105 hover:shadow-lg hover:shadow-arizona-terracotta/20 ",
             ~"border border-transparent hover:border-arizona-terracotta/40 cursor-pointer ",
-            ~"transform hover:-translate-y-1 block {arizona_template:get_binding(extra_classes, Bindings)}"
+            ~"transform hover:-translate-y-1 block {arizona_template:get_binding(extra_classes, Bindings, ~\"\")}"
         ]}">
         <div class="flex items-center justify-between mb-4">
             <div class="{[
