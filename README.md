@@ -27,6 +27,8 @@ Add to your project's `rebar.config`:
 
 ## Usage
 
+### Option 1: Interactive CLI
+
 Run the interactive menu:
 
 ```bash
@@ -74,6 +76,21 @@ The interactive flow:
    - **Hello world** - Basic Arizona app with minimal setup
    - **Presence** - Real-time app with PubSub Presence integration
    - **Frontend** - Modern web app with Tailwind CSS and ESBuild
+
+### Option 2: Direct Template Commands
+
+You can also create projects directly using rebar3's new command:
+
+```bash
+# Create a basic Arizona application
+$ rebar3 new arizona.hello_world my_app
+
+# Create a real-time application with presence
+$ rebar3 new arizona.presence my_chat_app
+
+# Create a modern frontend application
+$ rebar3 new arizona.frontend my_web_app
+```
 
 ## Templates
 
@@ -156,7 +173,8 @@ $ rebar3 ci
 
 ## Requirements
 
-- Erlang/OTP 28+
+- **Erlang/OTP 27+** - For template generation (`rebar3 new arizona.*`)
+- **Erlang/OTP 28+** - Required for interactive CLI (`rebar3 arizona`)
 
 ## License
 
