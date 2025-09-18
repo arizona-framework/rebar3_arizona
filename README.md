@@ -173,8 +173,7 @@ $ rebar3 ci
 
 ## Requirements
 
-- **Erlang/OTP 27+** - For template generation (`rebar3 new arizona.*`)
-- **Erlang/OTP 28+** - Required for interactive CLI (`rebar3 arizona`)
+- Erlang/OTP 28+
 
 ## License
 
