@@ -1,0 +1,53 @@
+{description, "Arizona Framework application with Svelte, Tailwind CSS and Vite"}.
+{variables, [
+    {name, "arizona_svelte", "Name of the Arizona application"}
+]}.
+
+%% /assets
+
+{template, "arizona.svelte/assets/css/app.css", "{{name}}/assets/css/app.css"}.
+{template, "arizona.svelte/assets/css/arizona-svelte.css", "{{name}}/assets/css/arizona-svelte.css"}.
+{template, "arizona.svelte/assets/js/main.js", "{{name}}/assets/js/main.js"}.
+{template, "arizona.svelte/assets/js/arizona-svelte.js", "{{name}}/assets/js/arizona-svelte.js"}.
+{template, "arizona.svelte/assets/js/arizona-svelte-discovery.js", "{{name}}/assets/js/arizona-svelte-discovery.js"}.
+{template, "arizona.svelte/assets/js/arizona-svelte-lifecycle.js", "{{name}}/assets/js/arizona-svelte-lifecycle.js"}.
+{template, "arizona.svelte/assets/js/arizona-svelte-registry.js", "{{name}}/assets/js/arizona-svelte-registry.js"}.
+{template, "arizona.svelte/assets/svelte/components/Counter.svelte", "{{name}}/assets/svelte/components/Counter.svelte"}.
+{template, "arizona.svelte/assets/svelte/components/HelloWorld.svelte", "{{name}}/assets/svelte/components/HelloWorld.svelte"}.
+{template, "arizona.svelte/assets/tailwind.config.js", "{{name}}/assets/tailwind.config.js"}.
+{template, "arizona.svelte/assets/vite.config.js", "{{name}}/assets/vite.config.js"}.
+
+%% /config
+
+{template, "arizona.svelte/config/sys.config", "{{name}}/config/sys.config"}.
+
+%% /priv
+
+{file, "arizona.svelte/priv/static/assets/app.css", "{{name}}/priv/static/assets/app.css"}.
+{file, "arizona.svelte/priv/static/assets/app.js", "{{name}}/priv/static/assets/app.js"}.
+{file, "arizona.svelte/priv/static/assets/app.js.map", "{{name}}/priv/static/assets/app.js.map"}.
+{file, "arizona.svelte/priv/static/favicon.ico", "{{name}}/priv/static/favicon.ico"}.
+{file, "arizona.svelte/priv/static/images/arizona-svelte-hero-bg.png", "{{name}}/priv/static/images/arizona-svelte-hero-bg.png"}.
+{file, "arizona.svelte/priv/static/robots.txt", "{{name}}/priv/static/robots.txt"}.
+
+%% /src
+
+{template, "arizona.svelte/src/app.src", "{{name}}/src/{{name}}.app.src"}.
+{template, "arizona.svelte/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
+{template, "arizona.svelte/src/components.erl", "{{name}}/src/{{name}}_components.erl"}.
+{template, "arizona.svelte/src/counter.erl", "{{name}}/src/{{name}}_counter.erl"}.
+{template, "arizona.svelte/src/css_reloader.erl", "{{name}}/src/{{name}}_css_reloader.erl"}.
+{template, "arizona.svelte/src/js_reloader.erl", "{{name}}/src/{{name}}_js_reloader.erl"}.
+{template, "arizona.svelte/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
+{template, "arizona.svelte/src/main.erl", "{{name}}/src/{{name}}.erl"}.
+{template, "arizona.svelte/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
+{template, "arizona.svelte/src/template.erl", "{{name}}/src/{{name}}_template.erl"}.
+{template, "arizona.svelte/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
+
+%% /
+
+{file, "arizona.svelte/.gitignore", "{{name}}/.gitignore"}.
+{template, "arizona.svelte/LICENSE.md", "{{name}}/LICENSE.md"}.
+{template, "arizona.svelte/package.json", "{{name}}/package.json"}.
+{template, "arizona.svelte/README.md", "{{name}}/README.md"}.
+{template, "arizona.svelte/rebar.config", "{{name}}/rebar.config"}.
