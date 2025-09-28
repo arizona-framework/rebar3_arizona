@@ -69,7 +69,7 @@ render(Bindings) ->
             <div class="text-xs text-arizona-teal/70 mb-2 text-center font-mono">
                 ↳ Svelte Component embedded inside Arizona Stateful Component
             </div>
-            {{{name}}:render_component(~"Counter", #{
+            {arizona_svelte:render_component(~"Counter", #{
                 title => ~"Svelte Counter (Client-side)",
                 initialCount => arizona_template:get_binding(count, Bindings)
             })}
