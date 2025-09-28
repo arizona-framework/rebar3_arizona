@@ -94,9 +94,14 @@ $ rebar3 new arizona.presence my_chat_app
 # Create a modern frontend application
 $ rebar3 new arizona.frontend my_web_app
 
-# Create a full-stack Svelte application
+# Create a full-stack Svelte application (uses arizona_svelte library)
 $ rebar3 new arizona.svelte my_svelte_app
 ```
+
+> **Note**: The arizona.svelte template leverages the **arizona_svelte library**
+> for robust Svelte integration. This provides production-ready component management,
+> automatic lifecycle monitoring, and seamless Arizona-Svelte interoperability out
+> of the box.
 
 ## Templates
 
@@ -124,26 +129,36 @@ The app will be available at http://localhost:1912 with hot-reloading enabled.
 
 ### Svelte Template
 
-The Svelte template creates a full-stack Arizona application with Svelte integration:
+The Svelte template creates a full-stack Arizona application powered by the
+**arizona_svelte library**:
 
+- **Arizona Svelte Library** - Production-ready Erlang/OTP and npm packages for
+Svelte integration
+- **Automatic Component Lifecycle** - Components mount/unmount automatically
+with DOM changes
 - **Svelte 5** - Modern reactive frontend framework with runes
 - **Vite** - Fast build tool with hot module replacement
 - **Tailwind CSS v4** - Modern utility-first CSS framework
-- **Component architecture** - HelloWorld and Counter Svelte components
-- **Hot-reloading** - Both CSS and JS changes reload automatically
-- **Arizona-Svelte bridge** - Seamless integration between server and client
-- **Hybrid rendering** - Server-side Arizona components with embedded Svelte components
+- **Interactive Demo Components** - HelloWorld, Counter, and LifecycleDemo components
+- **Real-time Monitoring** - Built-in component lifecycle monitoring and logging
+- **WebSocket Integration** - Automatic re-mounting after Arizona HTML patches
+- **Developer Tools** - Global `arizonaSvelte` debugging interface
 
 After creating a Svelte template project:
 
 ```bash
 cd myapp
-npm install          # Install dependencies
+npm install          # Install dependencies (includes @arizona-framework/svelte)
 npm run build        # Build CSS and JS
 rebar3 shell         # Start the Arizona server
 ```
 
-The app will be available at http://localhost:1912 with full hot-reloading for both CSS and Svelte components.
+The app will be available at http://localhost:1912 with:
+
+- **Automatic component management** - No manual mounting/unmounting needed
+- **Full hot-reloading** for both CSS and Svelte components
+- **Interactive lifecycle demo** for testing and learning
+- **Production-ready architecture** leveraging the arizona_svelte library
 
 ### Controls
 

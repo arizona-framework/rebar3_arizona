@@ -51,7 +51,7 @@ render(Bindings) ->
         </div>
 
         {% Lifecycle Demo Component }
-        {{{name}}:render_component(~"LifecycleDemo", #{})}
+        {arizona_svelte:render_component(~"LifecycleDemo", #{})}
     </div>
     """").
 
@@ -218,7 +218,7 @@ demo_section(_Bindings) ->
                 <div class="lg:col-span-2">
                     {% Svelte HelloWorld }
                     <div class="bg-obsidian/40 rounded-lg p-4 border border-arizona-teal/10 h-full">
-                        {{{name}}:render_component(~"HelloWorld", #{
+                        {arizona_svelte:render_component(~"HelloWorld", #{
                             name => ~"Svelte"
                         })}
                     </div>

@@ -15,6 +15,7 @@
 {template, "arizona.svelte/assets/svelte/components/Counter.svelte", "{{name}}/assets/svelte/components/Counter.svelte"}.
 {template, "arizona.svelte/assets/svelte/components/HelloWorld.svelte", "{{name}}/assets/svelte/components/HelloWorld.svelte"}.
 {template, "arizona.svelte/assets/svelte/components/LifecycleDemo.svelte", "{{name}}/assets/svelte/components/LifecycleDemo.svelte"}.
+{template, "arizona.svelte/assets/svelte/components/index.js", "{{name}}/assets/svelte/components/index.js"}.
 {template, "arizona.svelte/assets/tailwind.config.js", "{{name}}/assets/tailwind.config.js"}.
 {template, "arizona.svelte/assets/vite.config.js", "{{name}}/assets/vite.config.js"}.
 
@@ -35,14 +36,11 @@
 
 {template, "arizona.svelte/src/app.src", "{{name}}/src/{{name}}.app.src"}.
 {template, "arizona.svelte/src/app.erl", "{{name}}/src/{{name}}_app.erl"}.
-{template, "arizona.svelte/src/components.erl", "{{name}}/src/{{name}}_components.erl"}.
 {template, "arizona.svelte/src/counter.erl", "{{name}}/src/{{name}}_counter.erl"}.
 {template, "arizona.svelte/src/css_reloader.erl", "{{name}}/src/{{name}}_css_reloader.erl"}.
 {template, "arizona.svelte/src/js_reloader.erl", "{{name}}/src/{{name}}_js_reloader.erl"}.
 {template, "arizona.svelte/src/layout.erl", "{{name}}/src/{{name}}_layout.erl"}.
-{template, "arizona.svelte/src/main.erl", "{{name}}/src/{{name}}.erl"}.
 {template, "arizona.svelte/src/sup.erl", "{{name}}/src/{{name}}_sup.erl"}.
-{template, "arizona.svelte/src/template.erl", "{{name}}/src/{{name}}_template.erl"}.
 {template, "arizona.svelte/src/view.erl", "{{name}}/src/{{name}}_view.erl"}.
 
 %% /

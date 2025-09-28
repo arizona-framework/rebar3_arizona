@@ -1,12 +1,13 @@
 import Arizona from '@arizona-framework/client';
-import ArizonaSvelte from './arizona-svelte.js';
+import ArizonaSvelte from '@arizona-framework/svelte';
+import * as components from '../svelte/components';
 
 // Initialize Arizona framework
 globalThis.arizona = new Arizona({ logLevel: 'debug' });
-arizona.connect({ wsPath: '/live' });
+arizona.connect('/live');
 
 // Initialize ArizonaSvelte with automatic monitoring
-const arizonaSvelte = new ArizonaSvelte();
+const arizonaSvelte = new ArizonaSvelte({ components });
 
 // Start automatic monitoring - components will mount/unmount automatically
 arizonaSvelte.startMonitoring({
