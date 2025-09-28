@@ -14,6 +14,7 @@
 {template, "arizona.svelte/assets/js/arizona-svelte-registry.js", "{{name}}/assets/js/arizona-svelte-registry.js"}.
 {template, "arizona.svelte/assets/svelte/components/Counter.svelte", "{{name}}/assets/svelte/components/Counter.svelte"}.
 {template, "arizona.svelte/assets/svelte/components/HelloWorld.svelte", "{{name}}/assets/svelte/components/HelloWorld.svelte"}.
+{template, "arizona.svelte/assets/svelte/components/LifecycleDemo.svelte", "{{name}}/assets/svelte/components/LifecycleDemo.svelte"}.
 {template, "arizona.svelte/assets/tailwind.config.js", "{{name}}/assets/tailwind.config.js"}.
 {template, "arizona.svelte/assets/vite.config.js", "{{name}}/assets/vite.config.js"}.
 

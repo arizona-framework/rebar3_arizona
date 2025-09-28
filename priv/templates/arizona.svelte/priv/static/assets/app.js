@@ -361,6 +361,7 @@ const EACH_INDEX_REACTIVE = 1 << 1;
 const EACH_IS_CONTROLLED = 1 << 2;
 const EACH_IS_ANIMATED = 1 << 3;
 const EACH_ITEM_IMMUTABLE = 1 << 4;
+const TEMPLATE_FRAGMENT = 1;
 const TEMPLATE_USE_IMPORT_NODE = 1 << 1;
 const UNINITIALIZED = Symbol();
 const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
@@ -769,9 +770,9 @@ class Batch {
   }
   deactivate() {
     current_batch = null;
-    for (const update of effect_pending_updates) {
-      effect_pending_updates.delete(update);
-      update();
+    for (const update2 of effect_pending_updates) {
+      effect_pending_updates.delete(update2);
+      update2();
       if (current_batch !== null) {
         break;
       }
@@ -1533,6 +1534,12 @@ function internal_set(source2, value) {
     }
   }
   return value;
+}
+function update(source2, d = 1) {
+  var value = get(source2);
+  var result = d === 1 ? value++ : value--;
+  set(source2, value);
+  return result;
 }
 function increment$1(source2) {
   set(source2, source2.v + 1);
@@ -2671,20 +2678,31 @@ function assign_nodes(start, end) {
 }
 // @__NO_SIDE_EFFECTS__
 function from_html(content, flags2) {
+  var is_fragment = (flags2 & TEMPLATE_FRAGMENT) !== 0;
   var use_import_node = (flags2 & TEMPLATE_USE_IMPORT_NODE) !== 0;
   var node;
   var has_start = !content.startsWith("<!>");
   return () => {
     if (node === void 0) {
       node = create_fragment_from_html(has_start ? content : "<!>" + content);
-      node = /** @type {Node} */
+      if (!is_fragment) node = /** @type {Node} */
       /* @__PURE__ */ get_first_child(node);
     }
     var clone = (
       /** @type {TemplateNode} */
       use_import_node || is_firefox ? document.importNode(node, true) : node.cloneNode(true)
     );
-    {
+    if (is_fragment) {
+      var start = (
+        /** @type {TemplateNode} */
+        /* @__PURE__ */ get_first_child(clone)
+      );
+      var end = (
+        /** @type {TemplateNode} */
+        clone.lastChild
+      );
+      assign_nodes(start, end);
+    } else {
       assign_nodes(clone, clone);
     }
     return clone;
@@ -3371,7 +3389,7 @@ function decrement(__1, count) {
 function reset(__2, count) {
   set(count, 0);
 }
-var root$1 = /* @__PURE__ */ from_html(`<div class="w-full"><div class="p-4"><h2 class="text-lg font-bold text-red-500"> </h2> <p class="text-gray-400 text-sm">Independent reactive state</p></div> <div class="p-6"><div class="text-center mb-6"><div class="text-4xl font-bold text-red-500 mb-3"> </div> <div class="text-sm text-gray-400">Current value</div></div> <div class="flex gap-3"><button class="flex-1 py-3 px-4 bg-arizona-terracotta/10 text-arizona-terracotta border border-arizona-terracotta/20 rounded-lg hover:bg-arizona-terracotta/20 hover:border-arizona-terracotta/40 hover:text-arizona-mesa focus:ring-2 focus:ring-arizona-terracotta/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">−</button> <button class="flex-1 py-3 px-4 bg-slate/20 text-silver border border-slate/30 rounded-lg hover:bg-slate/30 hover:border-slate/50 hover:text-pearl focus:ring-2 focus:ring-slate/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">Reset</button> <button class="flex-1 py-3 px-4 bg-arizona-teal/10 text-arizona-teal border border-arizona-teal/20 rounded-lg hover:bg-arizona-teal/20 hover:border-arizona-teal/40 hover:text-arizona-sage focus:ring-2 focus:ring-arizona-teal/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">+</button></div></div></div>`);
+var root$2 = /* @__PURE__ */ from_html(`<div class="w-full"><div class="p-4"><h2 class="text-lg font-bold text-red-500"> </h2> <p class="text-gray-400 text-sm">Independent reactive state</p></div> <div class="p-6"><div class="text-center mb-6"><div class="text-4xl font-bold text-red-500 mb-3"> </div> <div class="text-sm text-gray-400">Current value</div></div> <div class="flex gap-3"><button class="flex-1 py-3 px-4 bg-arizona-terracotta/10 text-arizona-terracotta border border-arizona-terracotta/20 rounded-lg hover:bg-arizona-terracotta/20 hover:border-arizona-terracotta/40 hover:text-arizona-mesa focus:ring-2 focus:ring-arizona-terracotta/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">−</button> <button class="flex-1 py-3 px-4 bg-slate/20 text-silver border border-slate/30 rounded-lg hover:bg-slate/30 hover:border-slate/50 hover:text-pearl focus:ring-2 focus:ring-slate/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">Reset</button> <button class="flex-1 py-3 px-4 bg-arizona-teal/10 text-arizona-teal border border-arizona-teal/20 rounded-lg hover:bg-arizona-teal/20 hover:border-arizona-teal/40 hover:text-arizona-sage focus:ring-2 focus:ring-arizona-teal/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer">+</button></div></div></div>`);
 function Counter($$anchor, $$props) {
   push($$props, true);
   let title = prop($$props, "title", 3, "Svelte Counter"), initialCount = prop($$props, "initialCount", 3, 0);
@@ -3379,7 +3397,7 @@ function Counter($$anchor, $$props) {
   user_effect(() => {
     set(count, initialCount());
   });
-  var div = root$1();
+  var div = root$2();
   var div_1 = child(div);
   var h2 = child(div_1);
   var text = child(h2);
@@ -3417,11 +3435,11 @@ function resetBoard(_2, dropZones, items) {
     true
   );
 }
-var root_2 = /* @__PURE__ */ from_html(`<div role="button" tabindex="0" draggable="true" style="transform-origin: center;"><div class="flex items-center gap-2"><span class="text-lg"> </span> <span> </span></div></div>`);
-var root_3 = /* @__PURE__ */ from_html(`<div class="text-center text-slate/50 text-sm mt-8 italic">Drop items here</div>`);
+var root_2$1 = /* @__PURE__ */ from_html(`<div role="button" tabindex="0" draggable="true" style="transform-origin: center;"><div class="flex items-center gap-2"><span class="text-lg"> </span> <span> </span></div></div>`);
+var root_3$1 = /* @__PURE__ */ from_html(`<div class="text-center text-slate/50 text-sm mt-8 italic">Drop items here</div>`);
 var root_5 = /* @__PURE__ */ from_html(`<div class="text-center text-arizona-teal/60 text-sm mt-4 italic animate-pulse">Release to add here</div>`);
-var root_1 = /* @__PURE__ */ from_html(`<div role="region"><h4 class="font-semibold text-arizona-teal mb-3 text-center"> </h4> <div class="space-y-2"></div> <!></div>`);
-var root = /* @__PURE__ */ from_html(`<main class="h-full p-6 space-y-6"><div class="text-center"><h1 class="text-2xl font-bold text-arizona-teal mb-2">Hello, <span class="text-red-500"> </span>!</h1> <p class="text-gray-400 text-sm">Interactive drag & drop Kanban board</p></div> <div class="bg-charcoal/50 rounded-lg p-6 border border-arizona-teal/20"><div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-arizona-teal">Svelte Features Board</h3> <button class="px-3 py-1 bg-slate/20 text-silver rounded border border-slate/30 hover:bg-slate/30 transition-colors text-xs">Reset</button></div> <div class="grid grid-cols-1 md:grid-cols-3 gap-4"></div></div> <div class="bg-arizona-teal/5 rounded-lg p-4 border border-arizona-teal/20"><h3 class="text-sm font-semibold text-arizona-teal mb-2">How it works</h3> <div class="text-xs text-silver/80 space-y-1"><div>• Drag cards between columns to organize Svelte features</div> <div>• Hover effects and smooth animations powered by Svelte reactivity</div> <div>• State management with Svelte 5's $state rune</div> <div>• No external libraries needed - pure browser APIs</div></div></div></main>`);
+var root_1$1 = /* @__PURE__ */ from_html(`<div role="region"><h4 class="font-semibold text-arizona-teal mb-3 text-center"> </h4> <div class="space-y-2"></div> <!></div>`);
+var root$1 = /* @__PURE__ */ from_html(`<main class="h-full p-6 space-y-6"><div class="text-center"><h1 class="text-2xl font-bold text-arizona-teal mb-2">Hello, <span class="text-red-500"> </span>!</h1> <p class="text-gray-400 text-sm">Interactive drag & drop Kanban board</p></div> <div class="bg-charcoal/50 rounded-lg p-6 border border-arizona-teal/20"><div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-arizona-teal">Svelte Features Board</h3> <button class="px-3 py-1 bg-slate/20 text-silver rounded border border-slate/30 hover:bg-slate/30 transition-colors text-xs">Reset</button></div> <div class="grid grid-cols-1 md:grid-cols-3 gap-4"></div></div> <div class="bg-arizona-teal/5 rounded-lg p-4 border border-arizona-teal/20"><h3 class="text-sm font-semibold text-arizona-teal mb-2">How it works</h3> <div class="text-xs text-silver/80 space-y-1"><div>• Drag cards between columns to organize Svelte features</div> <div>• Hover effects and smooth animations powered by Svelte reactivity</div> <div>• State management with Svelte 5's $state rune</div> <div>• No external libraries needed - pure browser APIs</div></div></div></main>`);
 function HelloWorld($$anchor, $$props) {
   push($$props, true);
   let name = prop($$props, "name", 3, "World");
@@ -3525,7 +3543,7 @@ function HelloWorld($$anchor, $$props) {
     }
     return zone.items;
   }
-  var main = root();
+  var main = root$1();
   var div = child(main);
   var h1 = child(div);
   var span = sibling(child(h1));
@@ -3536,12 +3554,12 @@ function HelloWorld($$anchor, $$props) {
   button.__click = [resetBoard, dropZones, items];
   var div_3 = sibling(div_2, 2);
   each(div_3, 21, () => get(dropZones), (zone) => zone.id, ($$anchor2, zone) => {
-    var div_4 = root_1();
+    var div_4 = root_1$1();
     var h4 = child(div_4);
     var text_1 = child(h4);
     var div_5 = sibling(h4, 2);
     each(div_5, 23, () => getPreviewItems(get(zone)), (item) => item.id, ($$anchor3, item, index) => {
-      var div_6 = root_2();
+      var div_6 = root_2$1();
       var div_7 = child(div_6);
       var span_1 = child(div_7);
       var text_2 = child(span_1);
@@ -3563,7 +3581,7 @@ function HelloWorld($$anchor, $$props) {
     var node = sibling(div_5, 2);
     {
       var consequent = ($$anchor3) => {
-        var div_8 = root_3();
+        var div_8 = root_3$1();
         append($$anchor3, div_8);
       };
       var alternate = ($$anchor3) => {
@@ -3609,6 +3627,256 @@ const __vite_glob_0_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.def
   __proto__: null,
   default: HelloWorld
 }, Symbol.toStringTag, { value: "Module" }));
+function removeRandomComponent(_2, addLogEntry, updateDemoComponentCount) {
+  const demoComponents = document.querySelectorAll(".demo-component");
+  if (demoComponents.length === 0) {
+    addLogEntry("demo", "⚠️ No demo components to remove");
+    return;
+  }
+  const randomIndex = Math.floor(Math.random() * demoComponents.length);
+  const componentToRemove = demoComponents[randomIndex];
+  const componentId = componentToRemove.id;
+  componentToRemove.remove();
+  updateDemoComponentCount();
+  addLogEntry("demo", `➖ Removed component: ${componentId}`);
+}
+function removeAllComponents(__1, updateDemoComponentCount, addLogEntry) {
+  const demoComponents = document.querySelectorAll(".demo-component");
+  const count = demoComponents.length;
+  demoComponents.forEach((component) => component.remove());
+  updateDemoComponentCount();
+  addLogEntry("demo", `🗑️ Removed all ${count} demo components`);
+}
+function clearLog(__2, logEntries) {
+  set(logEntries, [], true);
+}
+function toggleLog(__3, showLog) {
+  set(showLog, !get(showLog));
+}
+var root_2 = /* @__PURE__ */ from_html(`<div><div class="flex justify-between"><span class="font-mono"> </span> <span class="text-xs opacity-70"> </span></div> <div class="mt-1"> </div></div>`);
+var root_3 = /* @__PURE__ */ from_html(`<div class="text-center text-silver/50 py-4">No log entries yet. Try adding/removing components!</div>`);
+var root_1 = /* @__PURE__ */ from_html(`<div class="fixed top-4 right-4 bg-obsidian/95 backdrop-blur-lg border border-arizona-teal/30 rounded-lg shadow-lg z-40 w-96 max-h-96 overflow-hidden"><div class="sticky top-0 bg-obsidian/95 border-b border-arizona-teal/20 p-3"><div class="flex justify-between items-center"><span class="text-arizona-teal font-semibold text-sm">📊 Lifecycle Events Log</span> <button class="text-xs text-silver/70 hover:text-silver transition-colors">Clear</button></div></div> <div id="log-container" class="p-3 space-y-1 max-h-80 overflow-y-auto"><!> <!></div></div>`);
+var root = /* @__PURE__ */ from_html(`<div class="fixed bottom-4 right-4 bg-obsidian/90 backdrop-blur-lg border border-arizona-teal/30 rounded-lg p-4 shadow-lg z-50 w-96"><div class="text-arizona-teal font-semibold mb-3 text-sm">🧪 Component Lifecycle Demo</div> <div class="space-y-2"><button class="w-full px-3 py-2 bg-arizona-teal/20 text-arizona-teal rounded border border-arizona-teal/30 hover:bg-arizona-teal/30 transition-colors text-xs">➕ Add Counter Component</button> <button class="w-full px-3 py-2 bg-arizona-terracotta/20 text-arizona-terracotta rounded border border-arizona-terracotta/30 hover:bg-arizona-terracotta/30 transition-colors text-xs">➕ Add HelloWorld Component</button> <button>➖ Remove Random Component</button> <button> </button> <button class="w-full px-3 py-2 bg-arizona-gold/20 text-arizona-gold rounded border border-arizona-gold/30 hover:bg-arizona-gold/30 transition-colors text-xs">📋 Toggle Log</button></div> <div class="mt-3 text-xs text-silver/70"><div>Demo Components: <span class="text-arizona-teal"> </span></div> <div>Total Mounted: <span class="text-arizona-teal"> </span></div> <div>Monitoring: <span class="text-arizona-teal"></span></div></div></div> <!>`, 1);
+function LifecycleDemo($$anchor, $$props) {
+  push($$props, true);
+  let componentCounter = /* @__PURE__ */ state(0);
+  let logEntries = /* @__PURE__ */ state(proxy([]));
+  let showLog = /* @__PURE__ */ state(true);
+  let mountedComponents = /* @__PURE__ */ state(0);
+  let demoComponentCount = /* @__PURE__ */ state(0);
+  function updateDemoComponentCount() {
+    if (typeof document !== "undefined") {
+      set(demoComponentCount, document.querySelectorAll(".demo-component").length, true);
+    }
+  }
+  user_effect(() => {
+    if (typeof window !== "undefined" && window.arizonaSvelte) {
+      const updateCounts = () => {
+        set(mountedComponents, window.arizonaSvelte.getLifecycle().getAllMountedComponents().size, true);
+        updateDemoComponentCount();
+      };
+      updateCounts();
+      const interval = setInterval(updateCounts, 1e3);
+      return () => clearInterval(interval);
+    }
+  });
+  function addCounterComponent() {
+    update(componentCounter);
+    const id = `demo-counter-${get(componentCounter)}`;
+    const componentDiv = document.createElement("div");
+    componentDiv.id = id;
+    componentDiv.className = "demo-component mb-4 p-4 bg-arizona-teal/10 border border-arizona-teal/20 rounded-lg";
+    componentDiv.setAttribute("data-svelte-component", "Counter");
+    componentDiv.setAttribute("data-svelte-props", JSON.stringify({
+      title: `Demo Counter #${get(componentCounter)}`,
+      initialCount: Math.floor(Math.random() * 10)
+    }));
+    const container = getContainer();
+    if (container) {
+      container.appendChild(componentDiv);
+    }
+    updateDemoComponentCount();
+    addLogEntry("demo", `➕ Added Counter component: ${id}`);
+  }
+  function addHelloWorldComponent() {
+    update(componentCounter);
+    const id = `demo-helloworld-${get(componentCounter)}`;
+    const componentDiv = document.createElement("div");
+    componentDiv.id = id;
+    componentDiv.className = "demo-component mb-4 p-4 bg-arizona-terracotta/10 border border-arizona-terracotta/20 rounded-lg";
+    componentDiv.setAttribute("data-svelte-component", "HelloWorld");
+    componentDiv.setAttribute("data-svelte-props", JSON.stringify({ name: `Demo User ${get(componentCounter)}` }));
+    const container = getContainer();
+    if (container) {
+      container.appendChild(componentDiv);
+    }
+    updateDemoComponentCount();
+    addLogEntry("demo", `➕ Added HelloWorld component: ${id}`);
+  }
+  function getContainer() {
+    return document.querySelector(".demo-components-container");
+  }
+  function addLogEntry(type, message) {
+    const timestamp = (/* @__PURE__ */ new Date()).toLocaleTimeString();
+    const entry = { id: Date.now() + Math.random(), timestamp, type, message };
+    set(
+      logEntries,
+      [
+        ...get(
+          logEntries
+          // Keep last 100 entries, newest at bottom
+        ).slice(-99),
+        entry
+      ],
+      true
+    );
+    scrollLogToBottom();
+  }
+  function scrollLogToBottom() {
+    setTimeout(
+      () => {
+        const logContainer = document.getElementById("log-container");
+        if (logContainer) {
+          logContainer.scrollTo({ top: logContainer.scrollHeight, behavior: "smooth" });
+        }
+      },
+      10
+    );
+  }
+  user_effect(() => {
+    if (typeof window !== "undefined") {
+      const originalConsoleLog = console.log;
+      const originalConsoleWarn = console.warn;
+      const originalConsoleError = console.error;
+      console.log = (...args) => {
+        originalConsoleLog.apply(console, args);
+        const message = args.map((arg) => typeof arg === "object" && arg !== null ? JSON.stringify(arg, null, 2) : String(arg)).join(" ");
+        if (message.includes("[Arizona Svelte]") && !message.includes("LifecycleDemo") && !message.includes("Mounted 0 components")) {
+          addLogEntry("info", message);
+        }
+      };
+      console.warn = (...args) => {
+        originalConsoleWarn.apply(console, args);
+        const message = args.map((arg) => typeof arg === "object" && arg !== null ? JSON.stringify(arg, null, 2) : String(arg)).join(" ");
+        if (message.includes("[Arizona Svelte]") && !message.includes("LifecycleDemo")) {
+          addLogEntry("warning", message);
+        }
+      };
+      console.error = (...args) => {
+        originalConsoleError.apply(console, args);
+        const message = args.map((arg) => typeof arg === "object" && arg !== null ? JSON.stringify(arg, null, 2) : String(arg)).join(" ");
+        if (message.includes("[Arizona Svelte]") && !message.includes("LifecycleDemo")) {
+          addLogEntry("error", message);
+        }
+      };
+      return () => {
+        console.log = originalConsoleLog;
+        console.warn = originalConsoleWarn;
+        console.error = originalConsoleError;
+      };
+    }
+  });
+  function getLogEntryClasses(type) {
+    switch (type) {
+      case "info":
+        return "bg-arizona-teal/5 border-arizona-teal text-arizona-teal";
+      case "warning":
+        return "bg-arizona-gold/5 border-arizona-gold text-arizona-gold";
+      case "error":
+        return "bg-red-500/5 border-red-500 text-red-400";
+      case "demo":
+        return "bg-arizona-terracotta/5 border-arizona-terracotta text-arizona-terracotta";
+      default:
+        return "bg-slate/5 border-slate text-silver";
+    }
+  }
+  var fragment = root();
+  var div = first_child(fragment);
+  var div_1 = sibling(child(div), 2);
+  var button = child(div_1);
+  button.__click = addCounterComponent;
+  var button_1 = sibling(button, 2);
+  button_1.__click = addHelloWorldComponent;
+  var button_2 = sibling(button_1, 2);
+  button_2.__click = [removeRandomComponent, addLogEntry, updateDemoComponentCount];
+  var button_3 = sibling(button_2, 2);
+  button_3.__click = [removeAllComponents, updateDemoComponentCount, addLogEntry];
+  var text = child(button_3);
+  var button_4 = sibling(button_3, 2);
+  button_4.__click = [toggleLog, showLog];
+  var div_2 = sibling(div_1, 2);
+  var div_3 = child(div_2);
+  var span = sibling(child(div_3));
+  var text_1 = child(span);
+  var div_4 = sibling(div_3, 2);
+  var span_1 = sibling(child(div_4));
+  var text_2 = child(span_1);
+  var div_5 = sibling(div_4, 2);
+  var span_2 = sibling(child(div_5));
+  span_2.textContent = typeof window !== "undefined" && window.arizonaSvelte?.isMonitoring() ? "✅" : "❌";
+  var node = sibling(div, 2);
+  {
+    var consequent_1 = ($$anchor2) => {
+      var div_6 = root_1();
+      var div_7 = child(div_6);
+      var div_8 = child(div_7);
+      var button_5 = sibling(child(div_8), 2);
+      button_5.__click = [clearLog, logEntries];
+      var div_9 = sibling(div_7, 2);
+      var node_1 = child(div_9);
+      each(node_1, 17, () => get(logEntries), (entry) => entry.id, ($$anchor3, entry) => {
+        var div_10 = root_2();
+        var div_11 = child(div_10);
+        var span_3 = child(div_11);
+        var text_3 = child(span_3);
+        var span_4 = sibling(span_3, 2);
+        var text_4 = child(span_4);
+        var div_12 = sibling(div_11, 2);
+        var text_5 = child(div_12);
+        template_effect(
+          ($0) => {
+            set_class(div_10, 1, `text-xs p-2 rounded border-l-2 ${$0 ?? ""}`);
+            set_text(text_3, get(entry).timestamp);
+            set_text(text_4, get(entry).type);
+            set_text(text_5, get(entry).message);
+          },
+          [() => getLogEntryClasses(get(entry).type)]
+        );
+        append($$anchor3, div_10);
+      });
+      var node_2 = sibling(node_1, 2);
+      {
+        var consequent = ($$anchor3) => {
+          var div_13 = root_3();
+          append($$anchor3, div_13);
+        };
+        if_block(node_2, ($$render) => {
+          if (get(logEntries).length === 0) $$render(consequent);
+        });
+      }
+      append($$anchor2, div_6);
+    };
+    if_block(node, ($$render) => {
+      if (get(showLog)) $$render(consequent_1);
+    });
+  }
+  template_effect(() => {
+    button_2.disabled = get(demoComponentCount) === 0;
+    set_class(button_2, 1, `w-full px-3 py-2 rounded border transition-colors text-xs ${get(demoComponentCount) === 0 ? "bg-slate/10 text-slate/50 border-slate/20 cursor-not-allowed" : "bg-slate/20 text-silver border-slate/30 hover:bg-slate/30"}`);
+    button_3.disabled = get(demoComponentCount) === 0;
+    set_class(button_3, 1, `w-full px-3 py-2 rounded border transition-colors text-xs ${get(demoComponentCount) === 0 ? "bg-slate/10 text-slate/50 border-slate/20 cursor-not-allowed" : "bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/30"}`);
+    set_text(text, `🗑️ Remove All Components (${get(demoComponentCount) ?? ""})`);
+    set_text(text_1, get(demoComponentCount));
+    set_text(text_2, get(mountedComponents));
+  });
+  append($$anchor, fragment);
+  pop();
+}
+delegate(["click"]);
+const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: LifecycleDemo
+}, Symbol.toStringTag, { value: "Module" }));
 class ArizonaSvelteDiscovery {
   constructor(options = {}) {
     this.componentsDir = options.componentsDir || "../svelte/components";
@@ -3621,7 +3889,7 @@ class ArizonaSvelteDiscovery {
    * @returns {Promise<Object>} Map of component paths to modules
    */
   async discoverComponents() {
-    this.componentModules = /* @__PURE__ */ Object.assign({ "../svelte/components/Counter.svelte": __vite_glob_0_0, "../svelte/components/HelloWorld.svelte": __vite_glob_0_1 });
+    this.componentModules = /* @__PURE__ */ Object.assign({ "../svelte/components/Counter.svelte": __vite_glob_0_0, "../svelte/components/HelloWorld.svelte": __vite_glob_0_1, "../svelte/components/LifecycleDemo.svelte": __vite_glob_0_2 });
     return this.componentModules;
   }
   /**
@@ -3665,12 +3933,26 @@ class ArizonaSvelteDiscovery {
   }
 }
 class ArizonaSvelteLifecycle {
-  constructor(registry) {
+  constructor(registry, options = {}) {
     if (!registry) {
       throw new Error("ArizonaSvelteLifecycle requires a registry instance");
     }
     this.registry = registry;
     this.mountedComponents = /* @__PURE__ */ new Map();
+    this.observers = /* @__PURE__ */ new Set();
+    this.isMonitoring = false;
+    this.options = {
+      autoMount: options.autoMount !== false,
+      // Default true
+      autoUnmount: options.autoUnmount !== false,
+      // Default true
+      observeSubtree: options.observeSubtree !== false,
+      // Default true
+      debounceMs: options.debounceMs || 100,
+      // Debounce DOM changes
+      ...options
+    };
+    this.debounceTimer = null;
   }
   /**
    * Mount Svelte components from DOM data attributes
@@ -3690,14 +3972,21 @@ class ArizonaSvelteLifecycle {
           const instance = mount(ComponentClass, { target, props });
           this.mountedComponents.set(target, instance);
           mountedCount++;
+          console.log(`[Arizona Svelte] ✅ Mounted '${componentName}' component`, {
+            target: target.id || target.className || "unnamed",
+            props,
+            totalMounted: this.mountedComponents.size
+          });
         } catch (error) {
-          console.error(`[Arizona Svelte] Failed to mount component '${componentName}':`, error);
+          console.error(`[Arizona Svelte] ❌ Failed to mount component '${componentName}':`, error);
         }
       } else {
         console.warn(`[Arizona Svelte] Component '${componentName}' not found in registry`);
       }
     });
-    console.log(`[Arizona Svelte] Mounted ${mountedCount} components`);
+    if (mountedCount > 0) {
+      console.log(`[Arizona Svelte] Mounted ${mountedCount} components`);
+    }
     return mountedCount;
   }
   /**
@@ -3709,11 +3998,16 @@ class ArizonaSvelteLifecycle {
     const instance = this.mountedComponents.get(target);
     if (instance) {
       try {
+        const componentName = target.dataset.svelteComponent || "unknown";
         unmount(instance);
         this.mountedComponents.delete(target);
+        console.log(`[Arizona Svelte] 🗑️ Unmounted '${componentName}' component`, {
+          target: target.id || target.className || "unnamed",
+          totalMounted: this.mountedComponents.size
+        });
         return true;
       } catch (error) {
-        console.error(`[Arizona Svelte] Failed to unmount component:`, error);
+        console.error(`[Arizona Svelte] ❌ Failed to unmount component:`, error);
         return false;
       }
     }
@@ -3763,6 +4057,227 @@ class ArizonaSvelteLifecycle {
    */
   isComponentMounted(target) {
     return this.mountedComponents.has(target);
+  }
+  /**
+   * Start automatic monitoring for component lifecycle
+   * @returns {void}
+   */
+  startMonitoring() {
+    if (this.isMonitoring) {
+      console.warn("[Arizona Svelte] Monitoring already started");
+      return;
+    }
+    this.isMonitoring = true;
+    console.log("[Arizona Svelte] Starting automatic component monitoring");
+    if (this.options.autoMount) {
+      this.mountComponents();
+    }
+    this.setupDOMObserver();
+    this.setupArizonaListener();
+    this.setupVisibilityListener();
+    this.setupUnloadListener();
+  }
+  /**
+   * Stop automatic monitoring
+   * @returns {void}
+   */
+  stopMonitoring() {
+    if (!this.isMonitoring) {
+      return;
+    }
+    this.isMonitoring = false;
+    console.log("[Arizona Svelte] Stopping automatic component monitoring");
+    this.observers.forEach((observer) => {
+      if (observer.disconnect) {
+        observer.disconnect();
+      } else if (typeof observer === "function") {
+        observer();
+      }
+    });
+    this.observers.clear();
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = null;
+    }
+  }
+  /**
+   * Setup DOM mutation observer to detect component additions/removals
+   * @private
+   */
+  setupDOMObserver() {
+    const observer = new MutationObserver((mutations) => {
+      this.debouncedHandleMutations(mutations);
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: this.options.observeSubtree,
+      attributes: true,
+      attributeFilter: ["data-svelte-component", "data-svelte-props"]
+    });
+    this.observers.add(observer);
+  }
+  /**
+   * Setup Arizona WebSocket event listener for patches
+   * @private
+   */
+  setupArizonaListener() {
+    const handleArizonaEvent = (event2) => {
+      const { type, data } = event2.detail;
+      if (type === "html_patch") {
+        this.debouncedScanAndMount();
+      }
+    };
+    document.addEventListener("arizonaEvent", handleArizonaEvent);
+    const cleanup = () => {
+      document.removeEventListener("arizonaEvent", handleArizonaEvent);
+    };
+    this.observers.add(cleanup);
+  }
+  /**
+   * Setup page visibility listener to pause/resume components
+   * @private
+   */
+  setupVisibilityListener() {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        console.log("[Arizona Svelte] Page hidden - components may pause updates");
+      } else {
+        console.log("[Arizona Svelte] Page visible - checking for component updates");
+        this.debouncedScanAndMount();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    const cleanup = () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+    this.observers.add(cleanup);
+  }
+  /**
+   * Setup page unload listener for cleanup
+   * @private
+   */
+  setupUnloadListener() {
+    const handleUnload = () => {
+      console.log("[Arizona Svelte] Page unloading - cleaning up components");
+      if (this.options.autoUnmount) {
+        this.unmountAllComponents();
+      }
+      this.stopMonitoring();
+    };
+    window.addEventListener("beforeunload", handleUnload);
+    window.addEventListener("unload", handleUnload);
+    const cleanup = () => {
+      window.removeEventListener("beforeunload", handleUnload);
+      window.removeEventListener("unload", handleUnload);
+    };
+    this.observers.add(cleanup);
+  }
+  /**
+   * Debounced mutation handler to avoid excessive re-scanning
+   * @private
+   */
+  debouncedHandleMutations(mutations) {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    this.debounceTimer = setTimeout(() => {
+      this.handleMutations(mutations);
+    }, this.options.debounceMs);
+  }
+  /**
+   * Debounced scan and mount to avoid excessive operations
+   * @private
+   */
+  debouncedScanAndMount() {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    this.debounceTimer = setTimeout(() => {
+      this.scanAndMount();
+    }, this.options.debounceMs);
+  }
+  /**
+   * Handle DOM mutations and update components accordingly
+   * @private
+   */
+  handleMutations(mutations) {
+    let shouldScan = false;
+    const removedNodes = /* @__PURE__ */ new Set();
+    mutations.forEach((mutation) => {
+      if (mutation.type === "childList" && mutation.removedNodes.length > 0) {
+        mutation.removedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            removedNodes.add(node);
+            this.unmountRemovedComponents(node);
+          }
+        });
+      }
+      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+        shouldScan = true;
+      } else if (mutation.type === "attributes" && (mutation.attributeName === "data-svelte-component" || mutation.attributeName === "data-svelte-props")) {
+        shouldScan = true;
+      }
+    });
+    if (shouldScan && this.options.autoMount) {
+      this.scanAndMount();
+    }
+  }
+  /**
+   * Scan for new components and mount them
+   * @private
+   */
+  async scanAndMount() {
+    try {
+      const mounted = await this.mountComponents();
+      if (mounted > 0) {
+        console.log(`[Arizona Svelte] 🔄 Auto-mounted ${mounted} new components`);
+      }
+    } catch (error) {
+      console.error("[Arizona Svelte] Error during auto-mount:", error);
+    }
+  }
+  /**
+   * Unmount components that were removed from DOM
+   * @private
+   */
+  unmountRemovedComponents(removedNode) {
+    if (!this.options.autoUnmount) {
+      return;
+    }
+    if (this.mountedComponents.has(removedNode)) {
+      console.log("[Arizona Svelte] Auto-unmounting removed component");
+      this.unmountComponent(removedNode);
+    }
+    if (removedNode.querySelectorAll) {
+      const childTargets = removedNode.querySelectorAll("[data-svelte-component]");
+      childTargets.forEach((target) => {
+        if (this.mountedComponents.has(target)) {
+          console.log("[Arizona Svelte] Auto-unmounting removed child component");
+          this.unmountComponent(target);
+        }
+      });
+    }
+  }
+  /**
+   * Get monitoring status
+   * @returns {boolean}
+   */
+  isMonitoringActive() {
+    return this.isMonitoring;
+  }
+  /**
+   * Get current monitoring options
+   * @returns {Object}
+   */
+  getMonitoringOptions() {
+    return { ...this.options };
+  }
+  /**
+   * Update monitoring options
+   * @param {Object} newOptions - New options to merge
+   */
+  updateMonitoringOptions(newOptions) {
+    this.options = { ...this.options, ...newOptions };
   }
 }
 class ArizonaSvelte {
@@ -3834,9 +4349,54 @@ class ArizonaSvelte {
     await this.init();
     return await this.lifecycle.mountComponents();
   }
+  /**
+   * Start automatic monitoring for component lifecycle
+   * This will automatically mount/unmount components when DOM changes
+   * @param {Object} options - Monitoring options
+   * @returns {Promise<void>}
+   */
+  async startMonitoring(options = {}) {
+    await this.init();
+    this.lifecycle.updateMonitoringOptions(options);
+    this.lifecycle.startMonitoring();
+  }
+  /**
+   * Stop automatic monitoring
+   * @returns {void}
+   */
+  stopMonitoring() {
+    this.lifecycle.stopMonitoring();
+  }
+  /**
+   * Check if monitoring is active
+   * @returns {boolean}
+   */
+  isMonitoring() {
+    return this.lifecycle.isMonitoringActive();
+  }
+  /**
+   * Get lifecycle management instance
+   * @returns {ArizonaSvelteLifecycle}
+   */
+  getLifecycle() {
+    return this.lifecycle;
+  }
 }
 globalThis.arizona = new G({ logLevel: "debug" });
 arizona.connect({ wsPath: "/live" });
 const arizonaSvelte = new ArizonaSvelte();
-arizonaSvelte.mountComponents();
+arizonaSvelte.startMonitoring({
+  autoMount: true,
+  // Automatically mount new components
+  autoUnmount: true,
+  // Automatically unmount removed components
+  observeSubtree: true,
+  // Monitor the entire DOM tree
+  debounceMs: 0
+  // Debounce DOM changes for 0ms
+});
+globalThis.arizonaSvelte = arizonaSvelte;
+console.log("[Arizona Svelte] 🚀 Automatic component monitoring started");
+console.log("[Arizona Svelte] 🧪 LifecycleDemo component available in UI");
+console.log("[Arizona Svelte] 🔍 Global access: window.arizonaSvelte");
 //# sourceMappingURL=app.js.map
