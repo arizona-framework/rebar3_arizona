@@ -49,6 +49,9 @@ render(Bindings) ->
                 {arizona_template:render_stateless(Module, enhanced_next_steps, #{})}
             </div>
         </div>
+
+        {% Lifecycle Demo Component }
+        {{{name}}:render_component(~"LifecycleDemo", #{})}
     </div>
     """").
 
@@ -157,6 +160,40 @@ demo_section(_Bindings) ->
             <p class="text-lg text-silver/90 max-w-4xl mx-auto leading-relaxed">
                 Experience the power of mixing pure Svelte components with Arizona's real-time server components
             </p>
+        </div>
+
+        {% Runtime Lifecycle Demo Components Section }
+        <div class="mb-16">
+            <div class="{[
+                ~"bg-gradient-to-br from-charcoal/80 to-slate/60 backdrop-blur-xl rounded-2xl p-8 ",
+                ~"border border-arizona-teal/20 hover:border-arizona-teal/40 transition-all duration-300 ",
+                ~"hover:shadow-xl hover:shadow-arizona-teal/10"
+            ]}">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="{[
+                        ~"w-10 h-10 bg-arizona-teal/20 rounded-xl flex items-center justify-center"
+                    ]}">
+                        <span class="text-xl">🧪</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-arizona-teal">Demo Components</h3>
+                        <p class="text-sm text-arizona-teal/70">Runtime lifecycle testing • Live monitoring</p>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <p class="text-sm text-silver/80 leading-relaxed mb-3">
+                        Components added here will be automatically mounted/unmounted by the lifecycle monitoring system.
+                        Watch the console and log for real-time events.
+                    </p>
+                    <div class="text-xs text-arizona-teal/70 bg-arizona-teal/5 border border-arizona-teal/20 rounded-lg p-3">
+                        💡 <strong>Tip:</strong> Use the <span class="text-arizona-teal font-semibold">Component Lifecycle Demo</span> controls
+                        (bottom-right corner) to add or remove components and see the lifecycle monitoring in action!
+                    </div>
+                </div>
+                <div class="demo-components-container" data-arizona-update="false">
+                    {% Demo components will be dynamically added here }
+                </div>
+            </div>
         </div>
 
         {% Pure Svelte Components Section }
@@ -322,7 +359,7 @@ enhanced_next_steps(_Bindings) ->
                 end, [
                     #{
                         prefix_text => ~"Edit ",
-                        filename => ~"src/arizona_svelte_view.erl",
+                        filename => ~"src/{{name}}_view.erl",
                         suffix_text => ~" to customize this page"
                     },
                     #{
