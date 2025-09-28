@@ -1,0 +1,12 @@
+{application, {{name}}, [
+    {description, "An Arizona application"},
+    {vsn, "0.1.0"},
+    {mod, {{{name}}_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        arizona
+    ]},
+    {licenses, ["Apache-2.0"]},
+    {links, []}
+]}.

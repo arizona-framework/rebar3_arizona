@@ -62,6 +62,8 @@ Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel
     Real-time app with PubSub presence integration
 [ ] Frontend template
     Modern web app with Tailwind CSS and ESBuild
+[ ] Svelte template
+    Full-stack app with Svelte, Tailwind CSS and Vite
 [ ] Cancel
     Return to main menu
 [ ] Exit
@@ -76,6 +78,7 @@ The interactive flow:
    - **Hello world** - Basic Arizona app with minimal setup
    - **Presence** - Real-time app with PubSub Presence integration
    - **Frontend** - Modern web app with Tailwind CSS and ESBuild
+   - **Svelte** - Full-stack app with Svelte, Tailwind CSS and Vite
 
 ### Option 2: Direct Template Commands
 
@@ -90,6 +93,9 @@ $ rebar3 new arizona.presence my_chat_app
 
 # Create a modern frontend application
 $ rebar3 new arizona.frontend my_web_app
+
+# Create a full-stack Svelte application
+$ rebar3 new arizona.svelte my_svelte_app
 ```
 
 ## Templates
@@ -115,6 +121,29 @@ rebar3 shell         # Start the Arizona server
 ```
 
 The app will be available at http://localhost:1912 with hot-reloading enabled.
+
+### Svelte Template
+
+The Svelte template creates a full-stack Arizona application with Svelte integration:
+
+- **Svelte 5** - Modern reactive frontend framework with runes
+- **Vite** - Fast build tool with hot module replacement
+- **Tailwind CSS v4** - Modern utility-first CSS framework
+- **Component architecture** - HelloWorld and Counter Svelte components
+- **Hot-reloading** - Both CSS and JS changes reload automatically
+- **Arizona-Svelte bridge** - Seamless integration between server and client
+- **Hybrid rendering** - Server-side Arizona components with embedded Svelte components
+
+After creating a Svelte template project:
+
+```bash
+cd myapp
+npm install          # Install dependencies
+npm run build        # Build CSS and JS
+rebar3 shell         # Start the Arizona server
+```
+
+The app will be available at http://localhost:1912 with full hot-reloading for both CSS and Svelte components.
 
 ### Controls
 

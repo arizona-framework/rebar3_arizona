@@ -263,6 +263,9 @@ template_selection_menu(State, AppName) ->
         {"Frontend template", "Modern web app with Tailwind CSS and ESBuild", fun(S) ->
             create_template(S, AppName, "arizona.frontend")
         end},
+        {"Svelte template", "Full-stack app with Svelte, Tailwind CSS and Vite", fun(S) ->
+            create_template(S, AppName, "arizona.svelte")
+        end},
         {"Cancel", "Return to main menu", fun(_) -> {ok, cancelled} end},
         {"Exit", "Exit the Arizona CLI", fun(_) -> {ok, exit} end}
     ],
