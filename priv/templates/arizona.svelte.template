@@ -8,10 +8,6 @@
 {template, "arizona.svelte/assets/css/app.css", "{{name}}/assets/css/app.css"}.
 {template, "arizona.svelte/assets/css/arizona-svelte.css", "{{name}}/assets/css/arizona-svelte.css"}.
 {template, "arizona.svelte/assets/js/main.js", "{{name}}/assets/js/main.js"}.
-{template, "arizona.svelte/assets/js/arizona-svelte.js", "{{name}}/assets/js/arizona-svelte.js"}.
-{template, "arizona.svelte/assets/js/arizona-svelte-discovery.js", "{{name}}/assets/js/arizona-svelte-discovery.js"}.
-{template, "arizona.svelte/assets/js/arizona-svelte-lifecycle.js", "{{name}}/assets/js/arizona-svelte-lifecycle.js"}.
-{template, "arizona.svelte/assets/js/arizona-svelte-registry.js", "{{name}}/assets/js/arizona-svelte-registry.js"}.
 {template, "arizona.svelte/assets/svelte/components/Counter.svelte", "{{name}}/assets/svelte/components/Counter.svelte"}.
 {template, "arizona.svelte/assets/svelte/components/HelloWorld.svelte", "{{name}}/assets/svelte/components/HelloWorld.svelte"}.
 {template, "arizona.svelte/assets/svelte/components/LifecycleDemo.svelte", "{{name}}/assets/svelte/components/LifecycleDemo.svelte"}.
@@ -25,9 +21,6 @@
 
 %% /priv
 
-{file, "arizona.svelte/priv/static/assets/app.css", "{{name}}/priv/static/assets/app.css"}.
-{file, "arizona.svelte/priv/static/assets/app.js", "{{name}}/priv/static/assets/app.js"}.
-{file, "arizona.svelte/priv/static/assets/app.js.map", "{{name}}/priv/static/assets/app.js.map"}.
 {file, "arizona.svelte/priv/static/favicon.ico", "{{name}}/priv/static/favicon.ico"}.
 {file, "arizona.svelte/priv/static/images/arizona-svelte-hero-bg.png", "{{name}}/priv/static/images/arizona-svelte-hero-bg.png"}.
 {file, "arizona.svelte/priv/static/robots.txt", "{{name}}/priv/static/robots.txt"}.
