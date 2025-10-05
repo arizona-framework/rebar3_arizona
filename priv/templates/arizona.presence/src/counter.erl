@@ -11,7 +11,7 @@ mount(Bindings) ->
     }).
 
 render(Bindings) ->
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <div id="{arizona_template:get_binding(id, Bindings)}">
         <span>Count: {arizona_template:get_binding(count, Bindings)}</span>
         <button

@@ -8,7 +8,7 @@ render(Bindings) ->
         ~"fault-tolerant real-time applications on the BEAM"
     ],
     Image = ~"images/arizona-hero-bg.jpg",
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <!DOCTYPE html>
     <html lang="en" class="h-full">
     <head>

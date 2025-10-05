@@ -23,7 +23,7 @@ mount(#{title := PageTitle}, _HttpRequest) ->
     arizona_view:new(?MODULE, Bindings, PageLayout).
 
 render(Bindings) ->
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <div id="{arizona_template:get_binding(id, Bindings)}">
         {% Counters section }
         <section class="counters">
