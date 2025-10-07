@@ -8,7 +8,7 @@ render(Bindings) ->
     <html>
     <head>
         <title>{arizona_template:get_binding(title, Bindings)}</title>
-        <script src="assets/app/js/main.js" type="module"></script>
+        <script src="assets/js/main.js" type="module"></script>
     </head>
     <body>
         {arizona_template:render_slot(arizona_template:get_binding(main_content, Bindings))}
