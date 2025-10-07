@@ -39,7 +39,7 @@ render(Bindings) ->
                 <div class="flex gap-3">
                     <button
                         type="button"
-                        onclick="{[~"arizona.sendEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'decr')"]}"
+                        onclick="{[~"arizona.pushEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'decr')"]}"
                         class="flex-1 py-3 px-4 bg-arizona-terracotta/10 text-arizona-terracotta border border-arizona-terracotta/20 rounded-lg hover:bg-arizona-terracotta/20 hover:border-arizona-terracotta/40 hover:text-arizona-mesa focus:ring-2 focus:ring-arizona-terracotta/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer"
                     >
                         −
@@ -47,7 +47,7 @@ render(Bindings) ->
 
                     <button
                         type="button"
-                        onclick="{[~"arizona.sendEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'reset')"]}"
+                        onclick="{[~"arizona.pushEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'reset')"]}"
                         class="flex-1 py-3 px-4 bg-slate/20 text-silver border border-slate/30 rounded-lg hover:bg-slate/30 hover:border-slate/50 hover:text-pearl focus:ring-2 focus:ring-slate/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer"
                     >
                         Reset
@@ -55,7 +55,7 @@ render(Bindings) ->
 
                     <button
                         type="button"
-                        onclick="{[~"arizona.sendEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'incr')"]}"
+                        onclick="{[~"arizona.pushEventTo('", arizona_template:get_binding(id, Bindings), ~"', 'incr')"]}"
                         class="flex-1 py-3 px-4 bg-arizona-teal/10 text-arizona-teal border border-arizona-teal/20 rounded-lg hover:bg-arizona-teal/20 hover:border-arizona-teal/40 hover:text-arizona-sage focus:ring-2 focus:ring-arizona-teal/50 focus:ring-offset-2 focus:ring-offset-charcoal transition-all duration-200 font-medium cursor-pointer"
                     >
                         +

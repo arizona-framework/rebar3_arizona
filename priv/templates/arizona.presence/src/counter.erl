@@ -16,7 +16,7 @@ render(Bindings) ->
         <span>Count: {arizona_template:get_binding(count, Bindings)}</span>
         <button
             type="button"
-            onclick="arizona.sendEventTo(
+            onclick="arizona.pushEventTo(
                 '{arizona_template:get_binding(id, Bindings)}',
                 'increment'
             )"
