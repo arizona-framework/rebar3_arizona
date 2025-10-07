@@ -21,7 +21,7 @@ mount(#{title := Title}, _Req) ->
 
 render(Bindings) ->
     Module = ?MODULE,
-    arizona_template:from_string(~""""
+    arizona_template:from_html(~""""
     <div
         id="{arizona_template:get_binding(id, Bindings)}"
         class="min-h-screen relative overflow-hidden bg-arizona-landscape"
@@ -49,7 +49,7 @@ render(Bindings) ->
     """").
 
 hero(_Bindings) ->
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <div class="text-center mb-16">
         <div class="inline-block relative">
             <h1 class="text-5xl sm:text-7xl lg:text-8xl font-bold text-pearl mb-8 leading-none">
@@ -80,7 +80,7 @@ hero(_Bindings) ->
 
 welcome_card(_Bindings) ->
     Module = ?MODULE,
-    arizona_template:from_string(~""""
+    arizona_template:from_html(~""""
     <div class="{[
         ~"bg-charcoal/80 backdrop-blur-xl rounded-2xl p-8 sm:p-10 mb-16 shadow-2xl border ",
         ~"border-pearl/10 hover:border-arizona-teal/40 hover:shadow-2xl ",
@@ -102,7 +102,7 @@ welcome_card(_Bindings) ->
         {% Enhanced Quick Links Grid }
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {arizona_template:render_list(fun(Card) ->
-                arizona_template:from_string(~"""
+                arizona_template:from_html(~"""
                 {arizona_template:render_stateless(Module, quick_link_card, Card)}
                 """)
             end, [
@@ -120,7 +120,7 @@ welcome_card(_Bindings) ->
                 },
                 #{
                     href => ~"https://github.com/arizona-framework/arizona",
-                    icon => arizona_template:from_string(~"""
+                    icon => arizona_template:from_html(~"""
                     <svg class="w-6 h-6 text-pearl" fill="currentColor" viewBox="0 0 24 24">
                         <path d="{[
                             ~"M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 ",
@@ -148,7 +148,7 @@ welcome_card(_Bindings) ->
 
 enhanced_next_steps(_Bindings) ->
     Module = ?MODULE,
-    arizona_template:from_string(~""""
+    arizona_template:from_html(~""""
     <div class="{[
         ~"bg-gradient-to-r from-slate/10 via-charcoal/20 to-slate/10 ",
         ~"backdrop-blur-sm rounded-2xl p-8 border border-pearl/10"
@@ -181,7 +181,7 @@ enhanced_next_steps(_Bindings) ->
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="space-y-4">
                 {arizona_template:render_list(fun(Item) ->
-                    arizona_template:from_string(~"""
+                    arizona_template:from_html(~"""
                     {arizona_template:render_stateless(Module, next_step, Item)}
                     """)
                 end, [
@@ -199,7 +199,7 @@ enhanced_next_steps(_Bindings) ->
 
             <div class="space-y-4">
                 {arizona_template:render_list(fun(Item) ->
-                    arizona_template:from_string(~"""
+                    arizona_template:from_html(~"""
                     {arizona_template:render_stateless(Module, next_step, Item)}
                     """)
                 end, [
@@ -218,7 +218,7 @@ enhanced_next_steps(_Bindings) ->
     """").
 
 next_step(Bindings) ->
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <div class="{[
         ~"group flex items-start gap-3 p-4 rounded-lg ",
         ~"hover:bg-obsidian/30 transition-colors duration-200"
@@ -245,7 +245,7 @@ next_step(Bindings) ->
 
 quick_link_card(Bindings) ->
     Module = ?MODULE,
-    arizona_template:from_string(~""""
+    arizona_template:from_html(~""""
     <a
         href="{arizona_template:get_binding(href, Bindings)}"
         target="_blank"
@@ -280,7 +280,7 @@ quick_link_card(Bindings) ->
     """").
 
 arrow_icon(_Bindings) ->
-    arizona_template:from_string(~"""
+    arizona_template:from_html(~"""
     <div class="{[
         ~"w-6 h-6 text-arizona-terracotta opacity-0 group-hover:opacity-100 ",
         ~"transition-opacity duration-300"

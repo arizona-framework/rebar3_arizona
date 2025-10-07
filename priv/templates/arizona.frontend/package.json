@@ -14,6 +14,6 @@
     "tailwindcss": "^4.1.13"
   },
   "dependencies": {
-    "@arizona-framework/client": "^0.1.2"
+    "@arizona-framework/client": "^0.2.1"
   }
 }
