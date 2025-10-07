@@ -94,7 +94,7 @@ interactive_loop(Options, Selected) ->
 
     % Display header
     io:format("~s~s~s\r\n", [?GREENCOLOR, ?ARIZONA_LOGO, ?RESET]),
-    io:format("Use ↑↓ arrows or j/k to navigate, Enter to select, Esc/q to cancel\r\n\r\n"),
+    io:format("Use ↑↓ arrows or j/k to navigate, Enter to select, Esc to cancel\r\n\r\n"),
 
     % Display options with selection indicator
     lists:foreach(
@@ -178,7 +178,7 @@ prompt_app_name() ->
     % Clear screen and show app name prompt
     io:put_chars("\e[2J\e[H"),
     io:format("~s~s~s\r\n", [?GREENCOLOR, ?ARIZONA_LOGO, ?RESET]),
-    io:format("Enter app name (or Esc/q to cancel): "),
+    io:format("Enter app name (or Esc to cancel): "),
 
     % Show cursor for input
     io:put_chars("\e[?25h"),
@@ -221,12 +221,6 @@ handle_name_input("\n", Acc) ->
     end;
 handle_name_input("\e", _Acc) ->
     % Escape pressed
-    cancelled;
-handle_name_input("q", _Acc) ->
-    % Q pressed
-    cancelled;
-handle_name_input("Q", _Acc) ->
-    % Q pressed
     cancelled;
 handle_name_input([127], Acc) ->
     % Backspace/Delete
@@ -327,12 +321,9 @@ handle_name_input_test_() ->
         ?_assertEqual("test_app", handle_name_input("\r", "test_app")),
         ?_assertEqual("test_app", handle_name_input("\n", "test_app")),
 
-        %% Test Escape key
+        %% Test Escape key - always cancels
         ?_assertEqual(cancelled, handle_name_input("\e", "some_input")),
-
-        %% Test Q key
-        ?_assertEqual(cancelled, handle_name_input("q", "some_input")),
-        ?_assertEqual(cancelled, handle_name_input("Q", "some_input"))
+        ?_assertEqual(cancelled, handle_name_input("\e", ""))
     ].
 
 %% Test format_error/1
