@@ -15,8 +15,6 @@
 
 %% /priv
 
-{file, "arizona.frontend/priv/static/assets/app.css", "{{name}}/priv/static/assets/app.css"}.
-{file, "arizona.frontend/priv/static/assets/app.js", "{{name}}/priv/static/assets/app.js"}.
 {file, "arizona.frontend/priv/static/favicon.ico", "{{name}}/priv/static/favicon.ico"}.
 {file, "arizona.frontend/priv/static/images/arizona-hero-bg.jpg", "{{name}}/priv/static/images/arizona-hero-bg.jpg"}.
 {file, "arizona.frontend/priv/static/robots.txt", "{{name}}/priv/static/robots.txt"}.
