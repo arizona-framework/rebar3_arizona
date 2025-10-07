@@ -2,8 +2,11 @@
 
 An Arizona application.
 
-## Build
+## Getting Started
 
+Start the application:
 ```bash
-$ rebar3 compile
+rebar3 shell
 ```
+
+The application will be available at [http://localhost:1912](http://localhost:1912)
