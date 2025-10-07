@@ -1,9 +1,10 @@
-import Arizona from '@arizona-framework/client';
+import { Arizona, ArizonaConsoleLogger, LOG_LEVELS } from '@arizona-framework/client';
 import ArizonaSvelte from '@arizona-framework/svelte';
 import * as components from '../svelte/components';
 
 // Initialize Arizona framework
-globalThis.arizona = new Arizona({ logLevel: 'debug' });
+const logger = new ArizonaConsoleLogger({ logLevel: LOG_LEVELS.debug });
+globalThis.arizona = new Arizona({ logger });
 arizona.connect('/live');
 
 // Initialize ArizonaSvelte with automatic monitoring

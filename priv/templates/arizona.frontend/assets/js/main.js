@@ -1,3 +1,4 @@
-import Arizona from '@arizona-framework/client';
-globalThis.arizona = new Arizona({ logLevel: 'debug' });
-arizona.connect({ wsPath: '/live' });
+import { Arizona, ArizonaConsoleLogger, LOG_LEVELS } from '@arizona-framework/client';
+const logger = new ArizonaConsoleLogger({ logLevel: LOG_LEVELS.debug });
+globalThis.arizona = new Arizona({ logger });
+arizona.connect('/live');
